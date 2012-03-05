@@ -34,4 +34,10 @@ class GitService {
 			return cmd.execute(null, new File(path)).text
 		}
 	}
+	
+	def getVersion() {
+		def output = "git --version".execute().text
+		def matcher = output =~ /git version ([\d\.]+)/
+		return matcher.size() > 0 ? matcher[0][1] : null
+	}
 }
