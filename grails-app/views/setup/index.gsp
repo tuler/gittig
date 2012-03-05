@@ -6,10 +6,13 @@
 	<body>
 		<h1>Setup</h1>
 		
-		<form action="save" class="form-horizontal">
+		<g:form action="save" class="form-horizontal">
 			<fieldset>
 				<f:all bean="configuration" />
 			</fieldset>
-		</form>
+			<div class="form-actions">
+				<g:submitButton type="submit" class="btn btn-primary" name="Save changes" />
+			</div>
+		</g:form>
 	</body>
 </html>

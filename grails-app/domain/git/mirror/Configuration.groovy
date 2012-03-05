@@ -16,6 +16,6 @@ class Configuration {
 			if (!f.canWrite()) return "not.writable"
 			return true
 		}
-		locationResolver inList: ["nameLocationResolver, usernameLocationResolver", "serviceLocationResolver"]
+		locationResolver inList: ['nameLocationResolver', 'usernameLocationResolver', 'serviceLocationResolver']
     }
 }
