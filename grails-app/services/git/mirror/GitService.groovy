@@ -7,7 +7,7 @@ class GitService {
 	 */
 	def cloneOrUpdate(url, path) {
 		if (new File(path).exists()) {
-			fetch(path)
+			update(path)
 		} else {
 			clone(url, path)
 		}
