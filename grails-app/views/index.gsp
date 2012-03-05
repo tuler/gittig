@@ -4,6 +4,6 @@
 		<meta name="layout" content="main" />
    </head>
 	<body>
-		<h1>Hello World</h1>
+		<h1>git-mirror</h1>
 	</body>
 </html>

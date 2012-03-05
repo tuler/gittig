@@ -10,10 +10,12 @@ class SetupController {
 	}
 	
 	def save() {
-		def configuration = new Configuration(params)
+		def configuration = Configuration.find {} ?: new Configuration()
+		configuration.properties = params
 		if (!configuration.save()) {
 			render view: 'index'
+		} else {
+			redirect url: '/'		
 		}
-		redirect url: '/'		
 	}
 }

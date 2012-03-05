@@ -21,6 +21,9 @@ class HookController {
 		gitService.cloneOrUpdate(url, path)
 	}
 	
+	/**
+	 * http://confluence.atlassian.com/display/BITBUCKET/Setting+Up+the+bitbucket+POST+Service
+	 */
 	def bitbucket() {
 		def json = request.JSON
 		def service = 'bitbucket'
@@ -32,6 +35,9 @@ class HookController {
 		gitService.cloneOrUpdate(url, path)
 	}
 
+	/**
+	 * http://support.beanstalkapp.com/customer/portal/articles/68110-trigger-a-url-on-commit-with-web-hooks
+	 */
     def beanstalk() {
 		def json = request.JSON
 		def service = 'beanstalk'
