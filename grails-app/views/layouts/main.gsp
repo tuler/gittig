@@ -31,8 +31,9 @@
 					<g:link class="brand" controller="home">git-mirror</g:link>
 					<div class="nav-collapse">
 						<ul class="nav">
+							<li><g:link controller="setup">Setup</g:link></li>
 						</ul>
-					</div><!--/.nav-collapse -->
+					</div>
 				</div>
 			</div>
 		</div>

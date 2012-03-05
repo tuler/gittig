@@ -15,23 +15,25 @@
 			</g:each>
 		</ul>
 		
-		<table class="table">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>Repositories</th>
+					<th>Remotes</th>
 				</tr>
 			</thead>
 			<tbody>
 				<g:if test="${repos}">
 				<g:each in="${repos}" var="repo">
 					<tr>
-						<td>${repo}</td>
+						<td>${repo.path}</td>
+						<td><pre>${repo.remote}</pre></td>
 					</tr>
 				</g:each>
 				</g:if>
 				<g:else>
 					<tr>
-						<td>No repositories mirrored yet</td>
+						<td colspan="2">No repositories mirrored yet</td>
 					</tr>
 				</g:else>
 			</tbody>

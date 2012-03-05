@@ -30,8 +30,30 @@ class PathService {
 			def locationResolverName = configuration.locationResolver
 			def locationResolver = ctx.getBean(locationResolverName)
 			def parts = extractUrlParts(url)
-			locationResolver.resolveLocation(parts.service, parts.username, parts.name);
+			def path = locationResolver.resolveLocation(parts.service, parts.username, parts.name)
+			return configuration.baseDir + path
 		}
     }
+
+	def listRepos() {
+		def configuration = Configuration.find {}
+		if (configuration) {
+			def depths = [
+				'nameLocationResolver': 2, 
+				'usernameLocationResolver': 3, 
+				'serviceLocationResolver': 4
+			]
+			def maxdepth = depths[configuration.locationResolver]
+			def baseDir = configuration.baseDir
+			def cmd = "find ${baseDir} -type d -name .git -maxdepth ${maxdepth}"
+			return cmd.execute().text.readLines().collect { gitPath -> 
+				def path = gitPath.minus('/.git')
+				def remote = "git remote -v".execute(null, new File(path)).text
+				[path: path, remote: remote]
+			}
+		} else {
+			return []
+		}
+	}
 
 }
