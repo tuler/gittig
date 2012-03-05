@@ -11,8 +11,8 @@ class HookController {
 	 */
 	def github() {
 		def json = request.JSON
-		def service = 'github'
-		def url = json.get('repository').get('url')
+		log.debug(json)
+		def url = json['repository']['url']
 		
 		// resolve local git repo path
 		def path = pathService.resolvePath(url)
@@ -26,7 +26,6 @@ class HookController {
 	 */
 	def bitbucket() {
 		def json = request.JSON
-		def service = 'bitbucket'
 
 		// resolve local git repo path
 		def path = pathService.resolvePath(url)
@@ -40,7 +39,6 @@ class HookController {
 	 */
     def beanstalk() {
 		def json = request.JSON
-		def service = 'beanstalk'
 		def url = json.get('uri')
 
 		// resolve local git repo path

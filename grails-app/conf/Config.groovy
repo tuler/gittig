@@ -6,9 +6,9 @@ grails.config.locations = [ "classpath:${appName}-config.properties",
                             "file:${userHome}/.grails/${appName}-config.properties",
                             "file:${userHome}/.grails/${appName}-config.groovy"]
 
-// if (System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
-// }
+if (System.properties["${appName}.config.location"]) {
+    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
+}
 
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
@@ -65,8 +65,9 @@ environments {
         grails.logging.jul.usebridge = true
     }
     production {
-        grails.logging.jul.usebridge = false
-        grails.serverURL = "http://git-mirror"
+        // grails.logging.jul.usebridge = false
+	grails.logging.jul.usebridge = true
+        grails.serverURL = "http://${appName}"
     }
 }
 
@@ -75,9 +76,9 @@ log4j = {
     // Example of changing the log pattern for the default console
     // appender:
     //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP

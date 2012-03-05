@@ -1,6 +1,10 @@
 package git.mirror
 
-class PathService {
+import org.springframework.context.*
+
+class PathService implements ApplicationContextAware {
+
+	ApplicationContext applicationContext
 
 	def extractUrlParts(url) {
 		// http://github.com/tuler/git-mirror
@@ -28,7 +32,7 @@ class PathService {
 		def configuration = Configuration.find {}
 		if (configuration) {
 			def locationResolverName = configuration.locationResolver
-			def locationResolver = ctx.getBean(locationResolverName)
+			def locationResolver = applicationContext.getBean(locationResolverName)
 			def parts = extractUrlParts(url)
 			def path = locationResolver.resolveLocation(parts.service, parts.username, parts.name)
 			return configuration.baseDir + path
