@@ -72,7 +72,7 @@ class HookControllerTests {
 	/**
 	 * http://confluence.atlassian.com/display/BITBUCKET/Setting+Up+the+bitbucket+POST+Service
 	 */
-	void testBitbucket() {
+	void _testBitbucket() {
 		def payload = """{
 		    'service': {
 		        'url': 'http://some.domain/some/url'
