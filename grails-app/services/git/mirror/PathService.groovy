@@ -43,15 +43,14 @@ class PathService implements ApplicationContextAware {
 		def configuration = Configuration.find {}
 		if (configuration) {
 			def depths = [
-				'nameLocationResolver': 2, 
-				'usernameLocationResolver': 3, 
-				'serviceLocationResolver': 4
+				'nameLocationResolver': 1, 
+				'usernameLocationResolver': 2, 
+				'serviceLocationResolver': 3
 			]
 			def maxdepth = depths[configuration.locationResolver]
 			def baseDir = configuration.baseDir
-			def cmd = "find ${baseDir} -type d -name .git -maxdepth ${maxdepth}"
-			return cmd.execute().text.readLines().collect { gitPath -> 
-				def path = gitPath.minus('/.git')
+			def cmd = "find ${baseDir} -type d -name *.git -maxdepth ${maxdepth}"
+			return cmd.execute().text.readLines().collect { path -> 
 				def remote = "git remote -v".execute(null, new File(path)).text
 				[path: path, remote: remote]
 			}

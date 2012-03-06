@@ -4,6 +4,7 @@ import grails.test.mixin.*
 import org.junit.*
 
 @TestFor(PathService)
+@Mock([Configuration])
 class PathServiceTests {
 
 	void testExtractUrlPartsGithub() {
@@ -33,4 +34,5 @@ class PathServiceTests {
 		assert "tuler" == parts.username
 		assert "git-mirror" == parts.name
 	}
+	
 }
