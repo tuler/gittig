@@ -1,5 +1,7 @@
 package git.mirror
 
+import org.codehaus.groovy.grails.web.json.JSONObject
+
 class HookController {
 
 	def pathService
@@ -10,8 +12,7 @@ class HookController {
 	 * http://help.github.com/post-receive-hooks/
 	 */
 	def github() {
-		def json = request.JSON
-		log.debug(json)
+		def json = new JSONObject(params.payload)
 		def url = json['repository']['url']
 		
 		// resolve local git repo path
@@ -19,6 +20,8 @@ class HookController {
 		
 		// clone or update
 		gitService.cloneOrUpdate(url, path)
+		
+		render "ok"
 	}
 	
 	/**
@@ -32,13 +35,15 @@ class HookController {
 		
 		// clone or update
 		gitService.cloneOrUpdate(url, path)
+		
+		render "ok"
 	}
 
 	/**
 	 * http://support.beanstalkapp.com/customer/portal/articles/68110-trigger-a-url-on-commit-with-web-hooks
 	 */
     def beanstalk() {
-		def json = request.JSON
+		def json = new JSONObject(params.payload)
 		def url = json.get('uri')
 
 		// resolve local git repo path
@@ -46,6 +51,8 @@ class HookController {
 		
 		// clone or update
 		gitService.cloneOrUpdate(url, path)
+		
+		render "ok"
 	}
 	
 }

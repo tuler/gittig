@@ -13,7 +13,7 @@ class PathService implements ApplicationContextAware {
 		// git@tuler.beanstalkapp.com:/git-mirror.git
 		
 		def services = [
-			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/http:\/\/github.com\/([^\/]+)\/(.+)/], 
+			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
 			bitbucket: [~/git@bitbucket.org:([^\/]+)\/([^\.]+).git/], 
 			beanstalk: [~/git@([^\.]+).beanstalkapp.com:\/([^\.]+).git/]
 		]

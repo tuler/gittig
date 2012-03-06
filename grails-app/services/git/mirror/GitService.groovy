@@ -20,7 +20,9 @@ class GitService {
 		runAsync {
 			def cmd = "git clone --mirror ${url} ${path}"
 			log.debug cmd
-			return cmd.execute().text
+			def output = cmd.execute().text
+			log.debug output
+			return output
 		}
     }
 
@@ -31,7 +33,9 @@ class GitService {
 		runAsync {
 			def cmd = "git remote update"
 			log.debug "cd ${path}; ${cmd}"
-			return cmd.execute(null, new File(path)).text
+			def output = cmd.execute(null, new File(path)).text
+			log.debug output
+			return output
 		}
 	}
 	
