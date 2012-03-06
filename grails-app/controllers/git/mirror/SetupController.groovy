@@ -10,10 +10,10 @@ class SetupController {
 	}
 	
 	def save() {
-		def configuration = Configuration.find {} ?: new Configuration()
+		def configuration = Configuration.find {} ?: new Configuration(gitVersion: gitService.getVersion())
 		configuration.properties = params
 		if (!configuration.save()) {
-			render view: 'index'
+			render view: 'index', model: [configuration: configuration]
 		} else {
 			redirect url: '/'		
 		}

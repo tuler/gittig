@@ -65,9 +65,7 @@ environments {
         grails.logging.jul.usebridge = true
     }
     production {
-        // grails.logging.jul.usebridge = false
-	grails.logging.jul.usebridge = true
-        grails.serverURL = "http://localhost:8080/${appName}"
+		grails.logging.jul.usebridge = false
     }
 }
 
