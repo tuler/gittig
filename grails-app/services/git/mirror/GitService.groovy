@@ -1,5 +1,9 @@
 package git.mirror
 
+import org.eclipse.jgit.api.*
+import org.eclipse.jgit.api.errors.*
+import org.eclipse.jgit.lib.*
+
 class GitService {
 
 	/**
@@ -18,11 +22,12 @@ class GitService {
 	 */
     def clone(url, path) {
 		runAsync {
-			def cmd = "git clone --mirror ${url} ${path}"
-			log.debug cmd
-			def output = cmd.execute().text
-			log.debug output
-			return output
+			try {
+				def progressMonitor = new TextProgressMonitor()
+				Git.cloneRepository().setUri(url).setDirectory(new File(path)).setBare(true).setCloneAllBranches(true).setNoCheckout(true).setProgressMonitor(progressMonitor).call()
+			} catch (JGitInternalException e) {
+				log.error e
+			}
 		}
     }
 
@@ -31,17 +36,16 @@ class GitService {
 	 */
 	def update(path) {
 		runAsync {
-			def cmd = "git remote update"
-			log.debug "cd ${path}; ${cmd}"
-			def output = cmd.execute(null, new File(path)).text
-			log.debug output
-			return output
+			try {
+				def git = Git.open(new File(path))
+				git.fetch().setRemoveDeletedRefs(true).setProgressMonitor(progressMonitor).call()
+			} catch (JGitInternalException e) {
+				log.error e
+			}
 		}
 	}
 	
 	def getVersion() {
-		def output = "git --version".execute().text
-		def matcher = output =~ /git version ([\d\.]+)/
-		return matcher.size() > 0 ? matcher[0][1] : null
+		"jgit 1.3.0"
 	}
 }
