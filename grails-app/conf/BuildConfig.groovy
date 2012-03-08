@@ -51,5 +51,7 @@ grails.project.dependency.resolution = {
 		runtime ":twitter-bootstrap:2.0.1.19"
 
 		build ":tomcat:$grailsVersion"
+		
+		compile ":console:1.1"
 	}
 }

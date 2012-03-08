@@ -48,18 +48,19 @@ class GitService {
 	def update(path) {
 		log.debug "Updating ${path}"
 		try {
+			RepositoryBuilder builder = new RepositoryBuilder()
+			Repository repository = builder.setGitDir(new File(path)).readEnvironment().build()
+			Git git = new Git(repository)
 			def progressMonitor = new TextProgressMonitor()
-			def git = Git.open(new File(path))
 			git.fetch().setRemoveDeletedRefs(true).setProgressMonitor(progressMonitor).call()
 			log.debug "Done updating ${path}"
 		} catch (JGitInternalException e) {
 			log.error e.cause
-		} catch (InvalidRemoteException e2) {
-			log.error e2
+		} catch (InvalidRemoteException e) {
+			log.error e
+		} catch (IOException e) {
+			log.error e
 		}
 	}
 	
-	def getVersion() {
-		"jgit 1.3.0"
-	}
 }

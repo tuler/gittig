@@ -34,9 +34,9 @@ class PathService implements ApplicationContextAware {
 			def locationResolverName = configuration.locationResolver
 			def locationResolver = applicationContext.getBean(locationResolverName)
 			def parts = extractUrlParts(url)
-			def path = locationResolver.resolveLocation(parts.service, parts.username, parts.name)
+			def path = configuration.baseDir + locationResolver.resolveLocation(parts.service, parts.username, parts.name)
 			log.debug "${url} resolved to path ${path}"
-			return configuration.baseDir + path
+			return path
 		}
     }
 
