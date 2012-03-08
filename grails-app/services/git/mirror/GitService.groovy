@@ -1,11 +1,16 @@
 package git.mirror
 
+import org.eclipse.jgit.api.*
+import org.eclipse.jgit.api.errors.*
+import org.eclipse.jgit.lib.*
+
 class GitService {
 
 	/**
 	 * Check if repository exists and updates, clone otherwise.
 	 */
 	def cloneOrUpdate(url, path) {
+		log.debug "Cloning or updating ${url} at ${path}"
 		if (new File(path).exists()) {
 			update(path)
 		} else {
@@ -17,12 +22,23 @@ class GitService {
 	 * Create a mirror clone of the url at the path
 	 */
     def clone(url, path) {
-		runAsync {
-			def cmd = "git clone --mirror ${url} ${path}"
-			log.debug cmd
-			def output = cmd.execute().text
-			log.debug output
-			return output
+		log.debug "Cloning ${url} at ${path}"
+		try {
+			if (url.startsWith('http')) {
+				// XXX: JGit requires a .git at the end when url is http. Check this.
+				url = url + '.git'
+			}
+			def progressMonitor = new TextProgressMonitor()
+			Git.cloneRepository()
+				.setURI(url)
+				.setDirectory(new File(path))
+				.setBare(true)
+				.setCloneAllBranches(true)
+				.setNoCheckout(true)
+				.setProgressMonitor(progressMonitor).call()
+			log.debug "Done cloning ${url} at ${path}"
+		} catch (JGitInternalException e) {
+			log.error e.cause
 		}
     }
 
@@ -30,18 +46,20 @@ class GitService {
 	 * Fetch the git repo at the given path
 	 */
 	def update(path) {
-		runAsync {
-			def cmd = "git remote update"
-			log.debug "cd ${path}; ${cmd}"
-			def output = cmd.execute(null, new File(path)).text
-			log.debug output
-			return output
+		log.debug "Updating ${path}"
+		try {
+			def progressMonitor = new TextProgressMonitor()
+			def git = Git.open(new File(path))
+			git.fetch().setRemoveDeletedRefs(true).setProgressMonitor(progressMonitor).call()
+			log.debug "Done updating ${path}"
+		} catch (JGitInternalException e) {
+			log.error e.cause
+		} catch (InvalidRemoteException e2) {
+			log.error e2
 		}
 	}
 	
 	def getVersion() {
-		def output = "git --version".execute().text
-		def matcher = output =~ /git version ([\d\.]+)/
-		return matcher.size() > 0 ? matcher[0][1] : null
+		"jgit 1.3.0"
 	}
 }
