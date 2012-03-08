@@ -146,7 +146,7 @@ class HookControllerTests {
 	 * http://support.beanstalkapp.com/customer/portal/articles/68110-trigger-a-url-on-commit-with-web-hooks
 	 */
 	void testBeanstalk() {
-		def payload = """{
+		params.payload = """{
 		    "before": "7295fb96e74d1b54ba65cb003dce4da4193b5d29",
 		    "after": "4ec8a1fcb42d278b60b33baa403a85c2e6706b5f",
 		    "push_is_too_large": false,
@@ -201,7 +201,6 @@ class HookControllerTests {
 		      }
 		    ]
 		}"""
-		request.JSON = new JSONObject(payload)
 		def path = "/tmp"
 		def pathControl = mockFor(PathService)
 		pathControl.demand.resolvePath(1..1) { u -> 
