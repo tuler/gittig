@@ -7,10 +7,12 @@ import org.junit.*
 class HomeControllerTests {
 
 	void testHooks() {
+		def pathServiceControl = mockFor(PathService)
+		pathServiceControl.demand.listRepos(1..1) {
+			[]
+		}
+		controller.pathService = pathServiceControl.createMock()
 		assert ['github', 'bitbucket', 'beanstalk'] == controller.index().hooks
 	}
 	
-	void testRepos() {
-		assert [] == controller.index().repos
-	}
 }

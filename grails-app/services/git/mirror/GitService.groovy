@@ -10,6 +10,7 @@ class GitService {
 	 * Check if repository exists and updates, clone otherwise.
 	 */
 	def cloneOrUpdate(url, path) {
+		log.debug "Cloning or updating ${url} at ${path}"
 		if (new File(path).exists()) {
 			update(path)
 		} else {
@@ -21,13 +22,23 @@ class GitService {
 	 * Create a mirror clone of the url at the path
 	 */
     def clone(url, path) {
-		runAsync {
-			try {
-				def progressMonitor = new TextProgressMonitor()
-				Git.cloneRepository().setUri(url).setDirectory(new File(path)).setBare(true).setCloneAllBranches(true).setNoCheckout(true).setProgressMonitor(progressMonitor).call()
-			} catch (JGitInternalException e) {
-				log.error e
+		log.debug "Cloning ${url} at ${path}"
+		try {
+			if (url.startsWith('http')) {
+				// XXX: JGit requires a .git at the end when url is http. Check this.
+				url = url + '.git'
 			}
+			def progressMonitor = new TextProgressMonitor()
+			Git.cloneRepository()
+				.setURI(url)
+				.setDirectory(new File(path))
+				.setBare(true)
+				.setCloneAllBranches(true)
+				.setNoCheckout(true)
+				.setProgressMonitor(progressMonitor).call()
+			log.debug "Done cloning ${url} at ${path}"
+		} catch (JGitInternalException e) {
+			log.error e.cause
 		}
     }
 
@@ -35,13 +46,16 @@ class GitService {
 	 * Fetch the git repo at the given path
 	 */
 	def update(path) {
-		runAsync {
-			try {
-				def git = Git.open(new File(path))
-				git.fetch().setRemoveDeletedRefs(true).setProgressMonitor(progressMonitor).call()
-			} catch (JGitInternalException e) {
-				log.error e
-			}
+		log.debug "Updating ${path}"
+		try {
+			def progressMonitor = new TextProgressMonitor()
+			def git = Git.open(new File(path))
+			git.fetch().setRemoveDeletedRefs(true).setProgressMonitor(progressMonitor).call()
+			log.debug "Done updating ${path}"
+		} catch (JGitInternalException e) {
+			log.error e.cause
+		} catch (InvalidRemoteException e2) {
+			log.error e2
 		}
 	}
 	

@@ -14,12 +14,15 @@ class HookController {
 	def github() {
 		def json = new JSONObject(params.payload)
 		def url = json['repository']['url']
+		log.debug "GitHub hook for ${url}"
 		
 		// resolve local git repo path
 		def path = pathService.resolvePath(url)
 		
 		// clone or update
-		gitService.cloneOrUpdate(url, path)
+//		runAsync {
+			gitService.cloneOrUpdate(url, path)
+//		}
 		
 		render "ok"
 	}
@@ -34,7 +37,9 @@ class HookController {
 		def path = pathService.resolvePath(url)
 		
 		// clone or update
-		gitService.cloneOrUpdate(url, path)
+//		runAsync {
+			gitService.cloneOrUpdate(url, path)
+//		}
 		
 		render "ok"
 	}
@@ -45,12 +50,15 @@ class HookController {
     def beanstalk() {
 		def json = new JSONObject(params.payload)
 		def url = json.get('uri')
+		log.debug "Beanstalk hook for ${url}"
 
 		// resolve local git repo path
 		def path = pathService.resolvePath(url)
 		
 		// clone or update
-		gitService.cloneOrUpdate(url, path)
+//		runAsync {
+			gitService.cloneOrUpdate(url, path)
+//		}
 		
 		render "ok"
 	}
