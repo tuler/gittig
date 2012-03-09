@@ -18,8 +18,9 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Repositories</th>
-					<th>Remotes</th>
+					<th>Repository</th>
+					<th>Origin</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -27,13 +28,14 @@
 				<g:each in="${repos}" var="repo">
 					<tr>
 						<td>${repo.path}</td>
-						<td><pre>${repo.remote}</pre></td>
+						<td><code>${repo.remote}</code></td>
+						<td><a class="btn btn-mini"><i class="icon-download"></i> Update</a></td>
 					</tr>
 				</g:each>
 				</g:if>
 				<g:else>
 					<tr>
-						<td colspan="2">No repositories mirrored yet</td>
+						<td colspan="3">No repositories mirrored yet</td>
 					</tr>
 				</g:else>
 			</tbody>

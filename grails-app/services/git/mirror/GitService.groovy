@@ -63,4 +63,10 @@ class GitService {
 		}
 	}
 	
+	def getRemoteUrl(path) {
+		RepositoryBuilder builder = new RepositoryBuilder()
+		Repository repository = builder.setGitDir(new File(path)).readEnvironment().build()
+		repository.config.getString('remote', 'origin', 'url')
+	}
+	
 }
