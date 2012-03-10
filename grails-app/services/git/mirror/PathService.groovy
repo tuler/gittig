@@ -5,6 +5,8 @@ import org.springframework.context.*
 class PathService implements ApplicationContextAware {
 
 	ApplicationContext applicationContext
+	
+	def gitService
 
 	def extractUrlParts(url) {
 		// http://github.com/tuler/git-mirror
@@ -34,8 +36,9 @@ class PathService implements ApplicationContextAware {
 			def locationResolverName = configuration.locationResolver
 			def locationResolver = applicationContext.getBean(locationResolverName)
 			def parts = extractUrlParts(url)
-			def path = locationResolver.resolveLocation(parts.service, parts.username, parts.name)
-			return configuration.baseDir + path
+			def path = configuration.baseDir + locationResolver.resolveLocation(parts.service, parts.username, parts.name)
+			log.debug "${url} resolved to path ${path}"
+			return path
 		}
     }
 
@@ -51,7 +54,7 @@ class PathService implements ApplicationContextAware {
 			def baseDir = configuration.baseDir
 			def cmd = "find ${baseDir} -type d -name *.git -maxdepth ${maxdepth}"
 			return cmd.execute().text.readLines().collect { path -> 
-				def remote = "git remote -v".execute(null, new File(path)).text
+				def remote = gitService.getRemoteUrl(path)
 				[path: path, remote: remote]
 			}
 		} else {

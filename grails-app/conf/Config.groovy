@@ -75,10 +75,12 @@ log4j = {
     // appender:
     //
     appenders {
-        console name: 'stdout', layout: pattern(conversionPattern: '%c{2} %m%n')
+        console name: 'stdout', layout: pattern(conversionPattern: '%d{HH:mm.ss,SSS} [%t] %p %c - %m%n')
     }
 
-	debug 'grails.app'
+	root {
+		error 'stdout'
+	}
 	
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
@@ -90,7 +92,16 @@ log4j = {
            'org.codehaus.groovy.grails.orm.hibernate', // hibernate integration
            'org.springframework',
            'org.hibernate',
-           'net.sf.ehcache.hibernate'
+           'net.sf.ehcache.hibernate',
+
+           'grails.app.services.org.grails.plugin.resource',
+           'grails.app.taglib.org.grails.plugin.resource',
+           'grails.app.taglib.org.grails.plugin.resource',
+           'grails.app.resourceMappers'
+
+	debug	'git.mirror',
+			'grails.app'
+
 }
 
 // Added by the Spring Security Core plugin:

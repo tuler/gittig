@@ -11,7 +11,7 @@ class HookControllerTests {
 	 * http://help.github.com/post-receive-hooks/
 	 */
 	void testGithub() {
-		def payload = """{
+		params.payload = """{
 		  "before": "5aef35982fb2d34e9d9d4502f6ede1072793222d",
 		  "repository": {
 		    "url": "http://github.com/defunkt/github",
@@ -51,7 +51,6 @@ class HookControllerTests {
 		  "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
 		  "ref": "refs/heads/master"
 		}"""
-		request.JSON = new JSONObject(payload)
 
 		def path = "/tmp"
 		def pathControl = mockFor(PathService)
@@ -73,7 +72,7 @@ class HookControllerTests {
 	 * http://confluence.atlassian.com/display/BITBUCKET/Setting+Up+the+bitbucket+POST+Service
 	 */
 	void _testBitbucket() {
-		def payload = """{
+		params.payload = """{
 		    'service': {
 		        'url': 'http://some.domain/some/url'
 		    },
@@ -127,7 +126,6 @@ class HookControllerTests {
 		    'canon_url': 'https://bitbucket.org',
 		    'user': 'brodie'
 		}"""
-		request.JSON = new JSONObject(payload)
 		def path = "/tmp"
 		def pathControl = mockFor(PathService)
 		pathControl.demand.resolvePath(1..1) { u -> 
@@ -148,7 +146,7 @@ class HookControllerTests {
 	 * http://support.beanstalkapp.com/customer/portal/articles/68110-trigger-a-url-on-commit-with-web-hooks
 	 */
 	void testBeanstalk() {
-		def payload = """{
+		params.payload = """{
 		    "before": "7295fb96e74d1b54ba65cb003dce4da4193b5d29",
 		    "after": "4ec8a1fcb42d278b60b33baa403a85c2e6706b5f",
 		    "push_is_too_large": false,
@@ -203,7 +201,6 @@ class HookControllerTests {
 		      }
 		    ]
 		}"""
-		request.JSON = new JSONObject(payload)
 		def path = "/tmp"
 		def pathControl = mockFor(PathService)
 		pathControl.demand.resolvePath(1..1) { u -> 
