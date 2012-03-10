@@ -33,6 +33,13 @@
 						<ul class="nav">
 							<li><g:link controller="setup">Setup</g:link></li>
 						</ul>
+						<ul class="nav pull-right">
+							<sec:ifLoggedIn>
+							</sec:ifLoggedIn>
+							<sec:ifNotLoggedIn>
+								<li><g:link controller="login">Login</g:link></li>
+							</sec:ifNotLoggedIn>
+						</ul>
 					</div>
 				</div>
 			</div>
