@@ -6,7 +6,7 @@ class BootStrap {
 		if (Role.count() == 0) {
 			log.info "Creating standard roles"
 			['ROLE_ADMIN', 'ROLE_USER'].each { role -> 
-				new Role(authority: role).save(failOnError: true)
+				new Role(authority: role).save(failOnError: true, flush: true)
 			}
 		}
 		
