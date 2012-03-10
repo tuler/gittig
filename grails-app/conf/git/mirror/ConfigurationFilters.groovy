@@ -5,7 +5,7 @@ class ConfigurationFilters {
 	def filters = {
 		all(controller:'*', action:'*') {
 			before = {
-				if (controllerName != 'setup') {
+				if (!(controllerName in ['setup', 'login'])) {
 					Configuration configuration = Configuration.find {}
 					if (!configuration) {
 						redirect controller: 'setup', action: 'index'

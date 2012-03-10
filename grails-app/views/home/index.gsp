@@ -14,31 +14,32 @@
 			</li>
 			</g:each>
 		</ul>
-		
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Repository</th>
-					<th>Origin</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<g:if test="${repos}">
-				<g:each in="${repos}" var="repo">
+		<sec:ifLoggedIn>
+			<table class="table table-striped">
+				<thead>
 					<tr>
-						<td>${repo.path}</td>
-						<td><code>${repo.remote}</code></td>
-						<td><a class="btn btn-mini"><i class="icon-download"></i> Update</a></td>
+						<th>Repository</th>
+						<th>Origin</th>
+						<th></th>
 					</tr>
-				</g:each>
-				</g:if>
-				<g:else>
-					<tr>
-						<td colspan="3">No repositories mirrored yet</td>
-					</tr>
-				</g:else>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<g:if test="${repos}">
+					<g:each in="${repos}" var="repo">
+						<tr>
+							<td>${repo.path}</td>
+							<td><code>${repo.remote}</code></td>
+							<td><a class="btn btn-mini"><i class="icon-download"></i> Update</a></td>
+						</tr>
+					</g:each>
+					</g:if>
+					<g:else>
+						<tr>
+							<td colspan="3">No repositories mirrored yet</td>
+						</tr>
+					</g:else>
+				</tbody>
+			</table>
+		</sec:ifLoggedIn>
 	</body>
 </html>

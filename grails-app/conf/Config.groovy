@@ -103,3 +103,8 @@ log4j = {
 			'grails.app'
 
 }
+
+// Added by the Spring Security Core plugin:
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'git.mirror.User'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'git.mirror.UserRole'
+grails.plugins.springsecurity.authority.className = 'git.mirror.Role'

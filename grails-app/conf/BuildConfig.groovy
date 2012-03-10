@@ -52,6 +52,11 @@ grails.project.dependency.resolution = {
 
 		build ":tomcat:$grailsVersion"
 		
-		compile ":console:1.1"
+		runtime ":console:1.1"
+		runtime ":executor:0.3"
+		runtime ":fields:1.0.4"
+		runtime ":git:1.0-SNAPSHOT"
+		runtime ":spring-security-core:1.2.7.2"
+		runtime ":spring-security-ldap:1.0.5"
 	}
 }
