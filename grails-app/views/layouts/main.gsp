@@ -31,10 +31,19 @@
 					<g:link class="brand" controller="home">git-mirror</g:link>
 					<div class="nav-collapse">
 						<ul class="nav">
-							<li><g:link controller="setup">Setup</g:link></li>
+							<sec:ifAnyGranted roles="ROLE_ADMIN"><li><g:link controller="setup">Setup</g:link></li></sec:ifAnyGranted>
 						</ul>
 						<ul class="nav pull-right">
 							<sec:ifLoggedIn>
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										<sec:username />
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li><g:link controller="logout">Logout</g:link></li>
+									</ul>
+								</li>
 							</sec:ifLoggedIn>
 							<sec:ifNotLoggedIn>
 								<li><g:link controller="login">Login</g:link></li>
