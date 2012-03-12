@@ -8,6 +8,8 @@ class HookController {
 	
 	def gitService
 	
+	def hookJobService
+	
 	/**
 	 * http://help.github.com/post-receive-hooks/
 	 */
@@ -23,6 +25,7 @@ class HookController {
 //		runAsync {
 			gitService.cloneOrUpdate(url, path)
 //		}
+		hookJobService.enqueue(url, path, 'github')
 		
 		render "ok"
 	}
@@ -40,6 +43,7 @@ class HookController {
 //		runAsync {
 			gitService.cloneOrUpdate(url, path)
 //		}
+		hookJobService.enqueue(url, path, 'bitbucket')
 		
 		render "ok"
 	}
@@ -59,6 +63,7 @@ class HookController {
 //		runAsync {
 			gitService.cloneOrUpdate(url, path)
 //		}
+		hookJobService.enqueue(url, path, 'beanstalk')
 		
 		render "ok"
 	}
