@@ -29,7 +29,7 @@
 					<g:each in="${repos}" var="repo">
 						<tr>
 							<td>${repo.path}</td>
-							<td><a class="btn btn-small"><i class="icon-chevron-left"></i>Update</a></td>
+							<td><g:link controller="queue" action="enqueue" class="btn btn-small" params="[path: repo.path, remote: repo.remote]"><i class="icon-chevron-left"></i>Update</g:link></td>
 							<td><code>${repo.remote}</code></td>
 							<!--td width="200px">
 								<div class="progress progress-info progress-striped progress-animated active">
