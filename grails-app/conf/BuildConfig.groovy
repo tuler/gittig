@@ -58,5 +58,6 @@ grails.project.dependency.resolution = {
 		runtime ":git:1.0-SNAPSHOT"
 		runtime ":spring-security-core:1.2.7.2"
 		runtime ":spring-security-ldap:1.0.5"
+		compile ":quartz2:0.2.2"
 	}
 }

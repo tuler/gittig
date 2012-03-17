@@ -12,9 +12,9 @@ class GitService {
 	def cloneOrUpdate(url, path, progressMonitor) {
 		log.debug "Cloning or updating ${url} at ${path}"
 		if (new File(path).exists()) {
-			update(path)
+			update(path, progressMonitor)
 		} else {
-			clone(url, path)
+			clone(url, path, progressMonitor)
 		}
 	}
 	

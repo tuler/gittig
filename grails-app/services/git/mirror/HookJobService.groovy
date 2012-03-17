@@ -1,9 +1,19 @@
 package git.mirror
 
+import org.quartz.*
+import grails.plugin.quartz2.*
+
 class HookJobService {
 
+	def quartzScheduler
+	
 	def enqueue(url, path, hook) {
-		new HookJob(url: url, path: path, hook: hook).save(failOnError: true)
+		// new HookJob(url: url, path: path, hook: hook).save(failOnError: true)
+		def trigger = TriggerBuilder.newTrigger()
+			.startNow()
+			.build()
+		def jobDetail = new SimpleJobDetail(url, HookJob2.class, [url: url, path: path])
+		quartzScheduler.scheduleJob(jobDetail, trigger)
 	}
 	
 	def dequeue() {
