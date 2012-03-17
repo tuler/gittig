@@ -6,13 +6,15 @@ class QueueController {
 
 	def hookJobService
 	
+	def hookJobExecutor
+	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def index() {
 		[jobs: HookJob.list(params)]
 	}
 
 	def status() {
-		
+//		hookJobExecutor
 	}
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
@@ -21,4 +23,5 @@ class QueueController {
 		hookJobService.enqueue(cmd.remote, cmd.path, 'undefined')
 		redirect action: 'index'
 	}
+	
 }

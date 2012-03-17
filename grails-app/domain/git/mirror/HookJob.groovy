@@ -10,6 +10,8 @@ class HookJob {
 	
 	HookJobStatus status = HookJobStatus.WAITING
 	
+	String error
+	
 	Date dateCreated
 	
 	Date lastUpdated
@@ -18,12 +20,18 @@ class HookJob {
 		url blank: false
 		path blank: false
 		hook blank: false
+		error nullable: true
 	}
 
 	enum HookJobStatus {
 		WAITING, 
 		RUNNING, 
 		DISCARDED, 
+		ERROR, 
 		COMPLETED
+	}
+	
+	static waiting = where {
+		status == HookJobStatus.WAITING
 	}
 }
