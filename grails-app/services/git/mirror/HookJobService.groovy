@@ -21,11 +21,11 @@ class HookJobService implements InitializingBean, JobListener {
 	}
 	
 	public void jobToBeExecuted(JobExecutionContext context) {
-		log.debug "jobToBeExecuted"
+		log.debug "jobToBeExecuted: ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
 	}
 	
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-		log.debug "jobWasExecuted"
+		log.debug "jobWasExecuted: ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
 	}
 	
 	def enqueue(url, path, hook) {
