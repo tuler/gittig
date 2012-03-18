@@ -2,10 +2,31 @@ package git.mirror
 
 import org.quartz.*
 import grails.plugin.quartz2.*
+import org.springframework.beans.factory.InitializingBean
 
-class HookJobService {
+class HookJobService implements InitializingBean, JobListener {
 
 	def quartzScheduler
+	
+	void afterPropertiesSet() throws Exception {
+		// register myself as job listener
+		quartzScheduler.listenerManager.addJobListener(this, null)
+	}
+	
+	public String getName() {
+		return "HookJob"
+	}
+	
+	public void jobExecutionVetoed(JobExecutionContext context) {
+	}
+	
+	public void jobToBeExecuted(JobExecutionContext context) {
+		log.debug "jobToBeExecuted"
+	}
+	
+	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
+		log.debug "jobWasExecuted"
+	}
 	
 	def enqueue(url, path, hook) {
 		// new HookJob(url: url, path: path, hook: hook).save(failOnError: true)

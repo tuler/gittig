@@ -7,17 +7,4 @@ beans = {
 	nameLocationResolver(NameLocationResolver)
 	usernameLocationResolver(UsernameLocationResolver)
 	serviceLocationResolver(ServiceLocationResolver)
-	
-	hookJobExecutor(HookJobExecutor) {
-		hookJobService = ref('hookJobService')
-	}
-	
-	hookJobTask(ScheduledTimerTask) {
-		period = 5000
-		timerTask = ref('hookJobExecutor')
-	}
-	
-	timerFactory(TimerFactoryBean) {
-		scheduledTimerTasks = [ref('hookJobTask')]
-	}
 }
