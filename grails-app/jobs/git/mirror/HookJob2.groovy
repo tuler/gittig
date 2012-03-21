@@ -14,6 +14,7 @@ class HookJob2 implements Job {
 	public HookJob2() { }
 	
 	void execute(JobExecutionContext jobCtx) {
+		Thread.sleep(100000)
 		def gitService = grailsApplication.mainContext.gitService
 		
 		log.info "Executing job for ${path} <- ${url}"

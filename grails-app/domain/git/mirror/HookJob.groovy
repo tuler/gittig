@@ -2,6 +2,8 @@ package git.mirror
 
 class HookJob {
 	
+	String key
+	
 	String url
 	
 	String path
@@ -17,6 +19,7 @@ class HookJob {
 	Date lastUpdated
 	
 	static constraints = {
+		key blank: false
 		url blank: false
 		path blank: false
 		hook blank: false

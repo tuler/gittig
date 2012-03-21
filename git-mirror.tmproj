@@ -41,6 +41,8 @@
 			<string>scripts</string>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>src</string>
 			<key>regexFolderFilter</key>
@@ -49,6 +51,8 @@
 			<string>src</string>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>web-app</string>
 			<key>regexFolderFilter</key>
@@ -64,6 +68,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{388, 312}, {1100, 899}}</string>
+	<string>{{345, 301}, {1100, 899}}</string>
 </dict>
 </plist>

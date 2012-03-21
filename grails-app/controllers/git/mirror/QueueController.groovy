@@ -1,6 +1,7 @@
 package git.mirror
 
 import grails.plugins.springsecurity.Secured
+import grails.converters.JSON
 
 class QueueController {
 
@@ -14,7 +15,8 @@ class QueueController {
 	}
 
 	def status() {
-//		hookJobExecutor
+		render(contentType: "text/json") {
+		}
 	}
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
