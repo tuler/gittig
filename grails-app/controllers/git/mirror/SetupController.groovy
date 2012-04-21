@@ -17,6 +17,7 @@ class SetupController {
 		def configuration = Configuration.find {} ?: new Configuration()
 		configuration.properties = params
 		if (!configuration.save()) {
+            //TODO: show error msg
 			render view: 'index', model: [configuration: configuration]
 		} else {
 			redirect url: '/'		

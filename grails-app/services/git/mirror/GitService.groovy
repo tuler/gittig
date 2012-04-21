@@ -9,26 +9,25 @@ class GitService {
 	/**
 	 * Check if repository exists and updates, clone otherwise.
 	 */
-	def cloneOrUpdate(url, path) {
+	def cloneOrUpdate(url, path, progressMonitor) {
 		log.debug "Cloning or updating ${url} at ${path}"
 		if (new File(path).exists()) {
-			update(path)
+			update(path, progressMonitor)
 		} else {
-			clone(url, path)
+			clone(url, path, progressMonitor)
 		}
 	}
 	
 	/**
 	 * Create a mirror clone of the url at the path
 	 */
-    def clone(url, path) {
+    def clone(url, path, progressMonitor) {
 		log.debug "Cloning ${url} at ${path}"
 		try {
 			if (url.startsWith('http')) {
 				// XXX: JGit requires a .git at the end when url is http. Check this.
 				url = url + '.git'
 			}
-			def progressMonitor = new TextProgressMonitor()
 			Git.cloneRepository()
 				.setURI(url)
 				.setDirectory(new File(path))
@@ -45,13 +44,12 @@ class GitService {
 	/**
 	 * Fetch the git repo at the given path
 	 */
-	def update(path) {
+	def update(path, progressMonitor) {
 		log.debug "Updating ${path}"
 		try {
 			RepositoryBuilder builder = new RepositoryBuilder()
 			Repository repository = builder.setGitDir(new File(path)).readEnvironment().build()
 			Git git = new Git(repository)
-			def progressMonitor = new TextProgressMonitor()
 			git.fetch().setRemoveDeletedRefs(true).setProgressMonitor(progressMonitor).call()
 			log.debug "Done updating ${path}"
 		} catch (JGitInternalException e) {
