@@ -16,12 +16,15 @@ class QueueController {
 
 	def status() {
 		render(contentType: "text/json") {
+            [status: 'going']
 		}
 	}
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def enqueue(RepoCommand cmd) {
 		// TODO: keep service name? use service name as remote name?
+        log.debug("remote " + cmd.remote)
+        log.debug("path " + cmd.path)
 		hookJobService.enqueue(cmd.remote, cmd.path, 'undefined')
 		redirect action: 'index'
 	}

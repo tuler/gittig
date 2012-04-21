@@ -5,4 +5,5 @@ grails-*.zip
 stacktrace.log
 target/
 web-app/WEB-INF/classes/
+git@github.com:tuler
 *.db

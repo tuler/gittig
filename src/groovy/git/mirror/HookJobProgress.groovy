@@ -5,7 +5,7 @@ import org.eclipse.jgit.lib.ProgressMonitor
 class HookJobProgress implements ProgressMonitor {
 	
 	HookJob job
-	
+    
 	private boolean cancelled
 	
 	private title
@@ -37,6 +37,7 @@ class HookJobProgress implements ProgressMonitor {
 	}
 	
 	void update(int completed) {
+        println "completed <- ${completed}"
 		this.completed = completed
 	}
 	

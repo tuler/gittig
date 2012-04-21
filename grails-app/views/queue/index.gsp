@@ -15,17 +15,17 @@
 			</thead>
 			<tbody>
 				<g:if test="${jobs}">
-				<g:each in="${jobs}" var="job">
-					<tr class="job" id="${job.key}">
-						<td>${job.path}</td>
-						<td><code>${job.url}</code></td>
-						<td width="200px">
-							<div class="progress progress-info progress-striped progress-animated active">
-								<div id="progress" class="bar" style="width: 40%"></div>
-							</div>
-						</td>
-					</tr>
-				</g:each>
+					<g:each in="${jobs}" var="job">
+						<tr class="job" id="${job.key}">
+							<td>${job.path}</td>
+							<td><code>${job.url}</code></td>
+							<td width="200px">
+                                <g:if test="${job.status.toString() in ['WAITING', 'RUNNING'] }">
+	                               <g:quartzProgressBar id="${job.id}" />
+	                            </g:if>
+							</td>
+						</tr>
+					</g:each>
 				</g:if>
 				<g:else>
 					<tr>
