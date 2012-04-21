@@ -82,6 +82,7 @@ class HookJobService implements InitializingBean, JobListener, SchedulerListener
     		def job = HookJob.findByKey(key)
     		job.status = HookJob.HookJobStatus.RUNNING
     		job.save()
+            context.mergedJobDataMap.put('hookJob', job)
 		}
 	}
 	

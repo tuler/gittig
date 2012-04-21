@@ -10,27 +10,25 @@ class HookJobProgressAdapter implements ProgressMonitor {
 	
     QuartzProgressData quartzProgressData
     
-	private boolean cancelled
-	
-	private title
-	
-	private totalWork
-	
-	private totalTasks
-	
-	private completed
-	
+    boolean cancelled // WTF?
+    
+    HookJobProgressAdapter(QuartzProgressData quartzProgressData) {
+        this.quartzProgressData = quartzProgressData
+    }
+    
 	HookJobProgressAdapter(HookJob job, QuartzProgressData quartzProgressData) {
 		this.job = job
         this.quartzProgressData = quartzProgressData
 	}
 	
 	void beginTask(String title, int totalWork) {
-		this.title = title
-		this.totalWork = totalWork
         quartzProgressData.msg = title
-        quartzProgressData.total = totalWork
-        println "title = ${title} totalWork = ${totalWork}"
+        if(totalWork == 0){
+            quartzProgressData.total = 100
+        }else{
+            quartzProgressData.total = totalWork
+        }
+        quartzProgressData.step = 0
 	}
 	
 	void endTask() {
@@ -38,25 +36,19 @@ class HookJobProgressAdapter implements ProgressMonitor {
 	}
 	
 	boolean isCancelled() {
-		cancelled
+		this.@cancelled // WTF?
 	}
 	
 	void start(int totalTasks) {
         quartzProgressData.total = totalTasks
-		this.totalTasks = totalTasks
 	}
 	
 	void update(int completed) {
-        quartzProgressData.step = completed
-		this.completed = completed
+        quartzProgressData.step += completed
 	}
 	
 	void cancel() {
-		cancelled = true
-	}
-	
-	double progress() {
-		(double) completed / totalTasks
+		cancelled = true // WTF?
 	}
 	
 }

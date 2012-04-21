@@ -14,11 +14,12 @@ class HookJob2 implements Job {
 	public HookJob2() { }
 	
 	void execute(JobExecutionContext jobCtx) {
-		//Thread.sleep(100000)
 		def gitService = grailsApplication.mainContext.gitService
-		
 		log.info "Executing job for ${path} <- ${url}"
-		def progressMonitor = new HookJobProgress()
+        def progressData = jobCtx.mergedJobDataMap.get("quartzProgressData")
+        progressData.id = jobCtx.mergedJobDataMap.get("hookJob").id
+		def progressMonitor = new HookJobProgressAdapter(progressData)
 		gitService.cloneOrUpdate(url, path, progressMonitor)
+        progressData.msg = "Done."
 	}
 }

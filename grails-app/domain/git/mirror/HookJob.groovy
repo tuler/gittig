@@ -17,7 +17,7 @@ class HookJob {
 	Date dateCreated
 	
 	Date lastUpdated
-	
+    
 	static constraints = {
 		key blank: false
 		url blank: false
