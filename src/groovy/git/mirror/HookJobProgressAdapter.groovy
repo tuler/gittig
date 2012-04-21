@@ -1,10 +1,14 @@
 package git.mirror
 
 import org.eclipse.jgit.lib.ProgressMonitor
+import quartz.progressbar.QuartzProgressData
 
-class HookJobProgress implements ProgressMonitor {
+
+class HookJobProgressAdapter implements ProgressMonitor {
 	
 	HookJob job
+	
+    QuartzProgressData quartzProgressData
     
 	private boolean cancelled
 	
@@ -16,16 +20,21 @@ class HookJobProgress implements ProgressMonitor {
 	
 	private completed
 	
-	HookJobProgress(HookJob job) {
+	HookJobProgressAdapter(HookJob job, QuartzProgressData quartzProgressData) {
 		this.job = job
+        this.quartzProgressData = quartzProgressData
 	}
 	
 	void beginTask(String title, int totalWork) {
 		this.title = title
 		this.totalWork = totalWork
+        quartzProgressData.msg = title
+        quartzProgressData.total = totalWork
+        println "title = ${title} totalWork = ${totalWork}"
 	}
 	
 	void endTask() {
+        
 	}
 	
 	boolean isCancelled() {
@@ -33,11 +42,12 @@ class HookJobProgress implements ProgressMonitor {
 	}
 	
 	void start(int totalTasks) {
+        quartzProgressData.total = totalTasks
 		this.totalTasks = totalTasks
 	}
 	
 	void update(int completed) {
-        println "completed <- ${completed}"
+        quartzProgressData.step = completed
 		this.completed = completed
 	}
 	

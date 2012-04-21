@@ -78,17 +78,21 @@ class HookJobService implements InitializingBean, JobListener, SchedulerListener
 	public void jobToBeExecuted(JobExecutionContext context) {
 		log.debug "jobToBeExecuted: ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
 		def key = context.jobDetail.key.toString()
-		def job = HookJob.findByKey(key)
-		job.status = HookJob.HookJobStatus.RUNNING
-		job.save()
+        HookJob.withNewTransaction{ t ->
+    		def job = HookJob.findByKey(key)
+    		job.status = HookJob.HookJobStatus.RUNNING
+    		job.save()
+		}
 	}
 	
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
 		log.debug "jobWasExecuted: ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
 		def key = context.jobDetail.key.toString()
-		def job = HookJob.findByKey(key)
-		job.status = HookJob.HookJobStatus.COMPLETED
-		job.save()
+        HookJob.withNewTransaction{ t ->
+    		def job = HookJob.findByKey(key)
+    		job.status = HookJob.HookJobStatus.COMPLETED
+    		job.save()
+		}
 	}
 	
 	

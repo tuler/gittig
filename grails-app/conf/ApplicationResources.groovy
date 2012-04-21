@@ -7,5 +7,4 @@ modules = {
 		dependsOn 'jquery'
 		resource url: 'js/queue.js'
 	}
-	
 }
