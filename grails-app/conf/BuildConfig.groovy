@@ -4,6 +4,7 @@ grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
+grails.plugin.location.quartz_progress_bar = '../quartz-progress-bar'
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.project.dependency.resolution = {
@@ -58,5 +59,6 @@ grails.project.dependency.resolution = {
 		runtime ":git:1.0-SNAPSHOT"
 		runtime ":spring-security-core:1.2.7.2"
 		runtime ":spring-security-ldap:1.0.5"
+		compile ":quartz2:0.2.2"
 	}
 }

@@ -8,6 +8,8 @@ class HookController {
 	
 	def gitService
 	
+	def hookJobService
+	
 	/**
 	 * http://help.github.com/post-receive-hooks/
 	 */
@@ -19,10 +21,8 @@ class HookController {
 		// resolve local git repo path
 		def path = pathService.resolvePath(url)
 		
-		// clone or update
-//		runAsync {
-			gitService.cloneOrUpdate(url, path)
-//		}
+		// enqueue job for async processing
+		hookJobService.enqueue(url, path, 'github')
 		
 		render "ok"
 	}
@@ -36,10 +36,8 @@ class HookController {
 		// resolve local git repo path
 		def path = pathService.resolvePath(url)
 		
-		// clone or update
-//		runAsync {
-			gitService.cloneOrUpdate(url, path)
-//		}
+		// enqueue job for async processing
+		hookJobService.enqueue(url, path, 'bitbucket')
 		
 		render "ok"
 	}
@@ -55,10 +53,8 @@ class HookController {
 		// resolve local git repo path
 		def path = pathService.resolvePath(url)
 		
-		// clone or update
-//		runAsync {
-			gitService.cloneOrUpdate(url, path)
-//		}
+		// enqueue job for async processing
+		hookJobService.enqueue(url, path, 'beanstalk')
 		
 		render "ok"
 	}
