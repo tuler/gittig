@@ -26,6 +26,7 @@ class HookJobService implements InitializingBean, JobListener, SchedulerListener
 		def url = jobDetail.jobDataMap.url
 		def path = jobDetail.jobDataMap.path
 		def hook = jobDetail.jobDataMap.hook
+		log.debug "jobAdded (${key}): ${path} <- ${url}"
 		new HookJob(key: key, url: url, path: path, hook: hook).save(failOnError: true)
 	}
 	
@@ -76,8 +77,8 @@ class HookJobService implements InitializingBean, JobListener, SchedulerListener
 	}
 	
 	public void jobToBeExecuted(JobExecutionContext context) {
-		log.debug "jobToBeExecuted: ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
 		def key = context.jobDetail.key.toString()
+		log.debug "jobToBeExecuted (${key}): ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
         HookJob.withNewTransaction{ t ->
     		def job = HookJob.findByKey(key)
     		job.status = HookJob.HookJobStatus.RUNNING
@@ -87,8 +88,8 @@ class HookJobService implements InitializingBean, JobListener, SchedulerListener
 	}
 	
 	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-		log.debug "jobWasExecuted: ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
 		def key = context.jobDetail.key.toString()
+		log.debug "jobWasExecuted (${key}): ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
         HookJob.withNewTransaction{ t ->
     		def job = HookJob.findByKey(key)
     		job.status = HookJob.HookJobStatus.COMPLETED
