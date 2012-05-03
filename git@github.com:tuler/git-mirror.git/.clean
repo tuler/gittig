@@ -1,5 +1,0 @@
-rm -rf *
-rm -rf .git
-git init
-git remote add origin git://github.com/fabiooshiro/git-mirror.git
-
