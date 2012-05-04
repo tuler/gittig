@@ -8,9 +8,7 @@ class HookJobProgress {
 	
 	int totalTasks
 	
-	boolean completed
-	
-	boolean cancelled
+	int completed
 	
 	static belongsTo = [job: HookJob]
 

@@ -16,7 +16,8 @@ class GitService {
 		log.debug "Cloning or updating ${url} at ${path}"
 		if (new File(path).exists()) {
 			def result = update(path, progressMonitor)
-			return result.toString()
+			// TODO: how do I get a nice text output from a FetchResult?
+			return ""
 		} else {
 			clone(url, path, progressMonitor)
 			return ""

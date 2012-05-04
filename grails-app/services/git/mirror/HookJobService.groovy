@@ -2,6 +2,8 @@ package git.mirror
 
 class HookJobService {
 
+	static transactional = false
+	
 	def gitService
 	
 	def enqueue(url, path, hook) {
@@ -9,15 +11,21 @@ class HookJobService {
 	}
 	
 	def dequeue() {
-		// def waiting = HookJob.waiting.findAll()
-		def waiting = HookJob.executeQuery "from HookJob j where j.status = ? and j.url not in (select jr.url from HookJob jr where jr.status = ?)", 
-			[HookJob.HookJobStatus.WAITING, HookJob.HookJobStatus.RUNNING]
-		if (waiting) {
-			def job = waiting.first()
-			log.info "Dequeuing job for ${job.url}"
-			return job
-		} else {
-			log.debug "No job to dequeue"
+		HookJob.withNewSession {
+			def waiting = HookJob.executeQuery "from HookJob j where j.status = ? and j.url not in (select jr.url from HookJob jr where jr.status = ?)", 
+				[HookJob.HookJobStatus.WAITING, HookJob.HookJobStatus.RUNNING]
+			if (waiting) {
+				def job = waiting.first()
+				log.info "Dequeuing job for ${job.url}"
+
+				// initialize the progress and set to RUNNING status
+				job.progress = new HookJobProgress(job: job)
+				job.status = HookJob.HookJobStatus.RUNNING
+				job.save(failOnError: true, flush: true)
+				return job
+			} else {
+				log.debug "No job to dequeue"
+			}
 		}
 	}
 	
@@ -25,14 +33,6 @@ class HookJobService {
 		def job = dequeue()
 		if (job) {
 			log.info "Running job for ${job.url}"
-
-			// initialize the progress and set to RUNNING status
-			HookJob.withNewSession {
-				def j = HookJob.get(job.id)
-				j.progress = new HookJobProgress(job: j)
-				j.status = HookJob.HookJobStatus.RUNNING
-				j.save(failOnError: true, flush: true)
-			}
 
 			// run the job
 			def status

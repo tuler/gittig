@@ -10,6 +10,8 @@ class HookJob {
 	
 	HookJobStatus status = HookJobStatus.WAITING
 	
+	boolean cancelled
+	
 	String error
 	
 	String log
@@ -29,11 +31,17 @@ class HookJob {
 		progress nullable: true
 	}
 
+	static mapping = {
+		error type: "text"
+		log type: "text"
+	}
+	
 	enum HookJobStatus {
 		WAITING, 
 		RUNNING, 
 		DISCARDED, 
 		ERROR, 
+		CANCELLED, 
 		COMPLETED
 	}
 	
