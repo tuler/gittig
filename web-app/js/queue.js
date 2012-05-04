@@ -32,7 +32,7 @@
 					var log = '';
 					if (job.log !== undefined) {
 						// replace carriage return with html line break
-						log = jog.log.replace(/\r?\n|\r/g, '<br>');
+						log = job.log.replace(/\r?\n|\r/g, '<br>');
 					}
 					
 					$('.bar', td).css('width', percent);
