@@ -30,7 +30,7 @@
 					var percent = (job.progress * 100) + '%';
 					var title = job.title + ' (' + percent + ')';
 					var log = '';
-					if (job.log !== undefined) {
+					if (job.log) {
 						// replace carriage return with html line break
 						log = job.log.replace(/\r?\n|\r/g, '<br>');
 					}

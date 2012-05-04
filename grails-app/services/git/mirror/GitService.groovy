@@ -17,7 +17,7 @@ class GitService {
 		if (new File(path).exists()) {
 			def result = update(path, progressMonitor)
 			// TODO: how do I get a nice text output from a FetchResult?
-			return ""
+			return result.messages
 		} else {
 			clone(url, path, progressMonitor)
 			return ""
