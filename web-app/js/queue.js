@@ -1,6 +1,9 @@
 (function($) {
 
 	var updateStatus = function() {
+		// mark all rows with a flag, so we can remove un-updated rows at the end
+		$('tr.job').addClass('not-updated');
+		
 		$.getJSON('status', function(data) {
 			_.each(data.jobs, function(job) {
 				// find the job row
@@ -9,6 +12,9 @@
 					// job not found, reload the page
 					location.reload();
 				}
+				
+				// mark the row as updated
+				tr.removeClass('not-updated');
 				
 				// get the status column
 				var td = $('td.status', tr);
@@ -30,6 +36,11 @@
 						placement: 'bottom'
 					});
 				}
+			});
+			
+			// remove un-updated rows
+			$("tr.not-updated").fadeOut(1000, function() {
+				$(this).empty();
 			});
 		});
 		
