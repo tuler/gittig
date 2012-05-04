@@ -26,11 +26,15 @@
 				$('div.' + job.status, td).show();
 				
 				if (job.status == 'RUNNING') {
-					// job running, update the progress bar
-					$('.title', td).html(job.title);
-					var percent = job.progress * 100;
-					$('.bar', td).css('width', percent + '%');
-					$('.bar', td).attr('title', job.title).data('content', job.log).popover({
+					// job running, update the title, log and progress bar 
+					var percent = (job.progress * 100) + '%';
+					var title = job.title + ' (' + percent ')';
+					var log = '';
+					if (job.log !== undefined) {
+						log = jog.log;
+					}
+					$('.bar', td).css('width', percent);
+					$('.title', td).html(title).attr('title', title).data('content', log).popover({
 						placement: 'bottom'
 					});
 					
