@@ -28,7 +28,7 @@
 				if (job.status == 'RUNNING') {
 					// job running, update the title, log and progress bar 
 					var percent = (job.progress * 100) + '%';
-					var title = job.title + ' (' + percent ')';
+					var title = job.title + ' (' + percent + ')';
 					var log = '';
 					if (job.log !== undefined) {
 						// replace carriage return with html line break
