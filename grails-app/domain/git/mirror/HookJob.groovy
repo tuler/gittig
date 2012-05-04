@@ -2,8 +2,6 @@ package git.mirror
 
 class HookJob {
 	
-	String key
-	
 	String url
 	
 	String path
@@ -14,16 +12,21 @@ class HookJob {
 	
 	String error
 	
+	String log
+	
 	Date dateCreated
 	
 	Date lastUpdated
     
+	HookJobProgress progress
+	
 	static constraints = {
-		key blank: false
 		url blank: false
 		path blank: false
 		hook blank: false
 		error nullable: true
+		log nullable: true
+		progress nullable: true
 	}
 
 	enum HookJobStatus {

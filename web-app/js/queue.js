@@ -2,7 +2,7 @@
 
 	var updateStatus = function() {
 		$.getJSON('status', function(data) {
-			console.log(data);
+			console.log(data.jobs);
 		});
 	}
 	

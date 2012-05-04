@@ -15,8 +15,13 @@ class QueueController {
 	}
 
 	def status() {
+		def results = HookJob.list()
 		render(contentType: "text/json") {
-            [status: 'going']
+			jobs = array {
+				for (j in results) {
+					job id: j.id, status: j.status.name(), error: j.error, log: j.log, title: j.progress?.title, progress: j.progress?.progress
+				}
+			}
 		}
 	}
 	
@@ -26,6 +31,11 @@ class QueueController {
         log.debug("remote " + cmd.remote)
         log.debug("path " + cmd.path)
 		hookJobService.enqueue(cmd.remote, cmd.path, 'undefined')
+		redirect action: 'index'
+	}
+	
+	def dequeue() {
+		hookJobService.dequeueAndRun()
 		redirect action: 'index'
 	}
 	

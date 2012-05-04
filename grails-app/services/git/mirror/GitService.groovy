@@ -3,18 +3,23 @@ package git.mirror
 import org.eclipse.jgit.api.*
 import org.eclipse.jgit.api.errors.*
 import org.eclipse.jgit.lib.*
+import org.eclipse.jgit.transport.FetchResult
 
 class GitService {
 
+	static transactional = false
+	
 	/**
 	 * Check if repository exists and updates, clone otherwise.
 	 */
 	def cloneOrUpdate(url, path, progressMonitor) {
 		log.debug "Cloning or updating ${url} at ${path}"
 		if (new File(path).exists()) {
-			update(path, progressMonitor)
+			def result = update(path, progressMonitor)
+			return result.toString()
 		} else {
 			clone(url, path, progressMonitor)
+			return ""
 		}
 	}
 	
@@ -34,10 +39,12 @@ class GitService {
 				.setBare(true)
 				.setCloneAllBranches(true)
 				.setNoCheckout(true)
-				.setProgressMonitor(progressMonitor).call()
+				.setProgressMonitor(progressMonitor)
+				.call()
 			log.debug "Done cloning ${url} at ${path}"
 		} catch (JGitInternalException e) {
 			log.error e.cause
+			throw new HookJobException(e.cause.message)
 		}
     }
 
@@ -50,14 +57,21 @@ class GitService {
 			RepositoryBuilder builder = new RepositoryBuilder()
 			Repository repository = builder.setGitDir(new File(path)).readEnvironment().build()
 			Git git = new Git(repository)
-			git.fetch().setRemoveDeletedRefs(true).setProgressMonitor(progressMonitor).call()
+			FetchResult result = git.fetch()
+				.setRemoveDeletedRefs(true)
+				.setProgressMonitor(progressMonitor)
+				.call()
 			log.debug "Done updating ${path}"
+			return result
 		} catch (JGitInternalException e) {
 			log.error e.cause
+			throw new HookJobException(e.cause.message)
 		} catch (InvalidRemoteException e) {
 			log.error e
+			throw new HookJobException(e.message)
 		} catch (IOException e) {
 			log.error e
+			throw new HookJobException(e.message)
 		}
 	}
 	

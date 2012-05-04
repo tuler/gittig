@@ -1,120 +1,64 @@
 package git.mirror
 
-import org.quartz.*
-import grails.plugin.quartz2.*
-import org.springframework.beans.factory.InitializingBean
+class HookJobService {
 
-class HookJobService implements InitializingBean, JobListener, SchedulerListener {
-
-	def quartzScheduler
-	
-	void afterPropertiesSet() throws Exception {
-		// register myself as job listener
-		quartzScheduler.listenerManager.addSchedulerListener(this)
-		quartzScheduler.listenerManager.addJobListener(this, null)
-	}
-	
-	public String getName() {
-		return "HookJob"
-	}
-	
-	/**
-	 * SchedulerListener
-	 */
-	void jobAdded (JobDetail jobDetail) {
-		def key = jobDetail.key.toString()
-		def url = jobDetail.jobDataMap.url
-		def path = jobDetail.jobDataMap.path
-		def hook = jobDetail.jobDataMap.hook
-		log.debug "jobAdded (${key}): ${path} <- ${url}"
-		new HookJob(key: key, url: url, path: path, hook: hook).save(failOnError: true)
-	}
-	
-	void jobDeleted (JobKey jobKey) {
-		
-	}
-	
-	void jobPaused (JobKey jobKey) {
-		
-	}
-	
-	void jobResumed (JobKey jobKey) {
-		
-	}
-	
-	void jobScheduled (Trigger trigger) {
-		
-	}
-	
-	void jobsPaused (String jobGroup) {
-		
-	}
-	
-	void jobsResumed (String jobGroup) {
-		
-	}
-	
-	void jobUnscheduled (TriggerKey triggerKey) {
-		
-	}
-	
-	void schedulerError (String msg, SchedulerException cause) {}
-	void schedulerInStandbyMode () {}
-	void schedulerShutdown () {}
-	void schedulerShuttingdown () {}
-	void schedulerStarted () {}
-	void schedulingDataCleared () {}
-	void triggerFinalized (Trigger trigger) {}
-	void triggerPaused (TriggerKey triggerKey) {}
-	void triggerResumed (TriggerKey triggerKey) {}
-	void triggersPaused (String triggerGroup) {}
-	void triggersResumed (String triggerGroup) {}
-	
-	/**
-	 * JobListener
-	 */
-	public void jobExecutionVetoed(JobExecutionContext context) {
-	}
-	
-	public void jobToBeExecuted(JobExecutionContext context) {
-		def key = context.jobDetail.key.toString()
-		log.debug "jobToBeExecuted (${key}): ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
-        HookJob.withNewTransaction{ t ->
-    		def job = HookJob.findByKey(key)
-    		job.status = HookJob.HookJobStatus.RUNNING
-    		job.save()
-            context.mergedJobDataMap.put('hookJob', job)
-		}
-	}
-	
-	public void jobWasExecuted(JobExecutionContext context, JobExecutionException jobException) {
-		def key = context.jobDetail.key.toString()
-		log.debug "jobWasExecuted (${key}): ${context.jobDetail.jobDataMap.path} <- ${context.jobDetail.jobDataMap.url}"
-        HookJob.withNewTransaction{ t ->
-    		def job = HookJob.findByKey(key)
-    		job.status = HookJob.HookJobStatus.COMPLETED
-    		job.save()
-		}
-	}
-	
+	def gitService
 	
 	def enqueue(url, path, hook) {
-		// new HookJob(url: url, path: path, hook: hook).save(failOnError: true)
-		def trigger = TriggerBuilder.newTrigger()
-			.startNow()
-			.build()
-		def id = "${url}-${new Date().format('yyyyMMddHHmmss')}"
-		def jobDetail = new SimpleJobDetail(id, HookJob2.class, [url: url, path: path, hook: hook])
-		quartzScheduler.scheduleJob(jobDetail, trigger)
+		new HookJob(url: url, path: path, hook: hook).save(failOnError: true)
 	}
 	
 	def dequeue() {
-		def waiting = HookJob.waiting.findAll()
+		// def waiting = HookJob.waiting.findAll()
+		def waiting = HookJob.executeQuery "from HookJob j where j.status = ? and j.url not in (select jr.url from HookJob jr where jr.status = ?)", 
+			[HookJob.HookJobStatus.WAITING, HookJob.HookJobStatus.RUNNING]
 		if (waiting) {
 			def job = waiting.first()
 			log.info "Dequeuing job for ${job.url}"
-			job.status = HookJob.HookJobStatus.RUNNING
-			job.save()
+			return job
+		} else {
+			log.debug "No job to dequeue"
+		}
+	}
+	
+	def dequeueAndRun() {
+		def job = dequeue()
+		if (job) {
+			log.info "Running job for ${job.url}"
+
+			// initialize the progress and set to RUNNING status
+			HookJob.withNewSession {
+				def j = HookJob.get(job.id)
+				j.progress = new HookJobProgress(job: j)
+				j.status = HookJob.HookJobStatus.RUNNING
+				j.save(failOnError: true, flush: true)
+			}
+
+			// run the job
+			def status
+			def error
+			def result
+			try {
+				def hookJobProgressMonitor = new HookJobProgressMonitor(job.id)
+				result = gitService.cloneOrUpdate(job.url, job.path, hookJobProgressMonitor)
+				status = HookJob.HookJobStatus.COMPLETED
+			} catch (HookJobException e) {
+				status = HookJob.HookJobStatus.ERROR
+				error = e.message
+			}
+			
+			// save the job final state
+			HookJob.withNewSession {
+				def j = HookJob.get(job.id)
+				j.status = status
+				j.error = error
+				if (result) {
+					j.log = j.log + result
+				}
+				j.save(failOnError: true, flush: true)
+			}
+		} else {
+			log.debug "No job to run"
 		}
 	}
 	
