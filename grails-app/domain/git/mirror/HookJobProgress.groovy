@@ -13,7 +13,7 @@ class HookJobProgress {
 	static belongsTo = [job: HookJob]
 
 	public transient double getProgress() {
-		if (totalTasks > 0) {
+		if (totalWork > 0) {
 			return (double) completed / totalWork
 		} else {
 			return 0.0
