@@ -58,7 +58,7 @@ class HookJobProgressMonitor implements ProgressMonitor {
 		logProgressMonitor.update(completed)
 		HookJob.withNewSession {
 			def job = HookJob.get(jobId)
-			job.progress.completed = completed
+			job.progress.completed += completed
 			job.log = logWriter.toString()
 			job.save(failOnError: true)
 		}
