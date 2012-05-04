@@ -31,10 +31,13 @@
 					var title = job.title + ' (' + percent ')';
 					var log = '';
 					if (job.log !== undefined) {
-						log = jog.log;
+						// replace carriage return with html line break
+						log = jog.log.replace(/\r?\n|\r/g, '<br>');
 					}
+					
 					$('.bar', td).css('width', percent);
-					$('.title', td).html(title).attr('title', title).data('content', log).popover({
+					$('.title', td).html(title);
+					$('.bar', td).attr('title', title).data('content', log).popover({
 						placement: 'bottom'
 					});
 					
