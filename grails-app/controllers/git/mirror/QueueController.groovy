@@ -17,7 +17,7 @@ class QueueController {
 		render(contentType: "text/json") {
 			jobs = array {
 				for (j in results) {
-					job id: j.id, status: j.status.name(), error: j.error, log: j.log, title: j.progress?.title, progress: j.progress?.progress
+					job id: j.id, status: j.status.name(), error: j.error, log: j.log, title: j.progress?.title, totalWork: j.progress?.totalWork, totalTasks: j.progress?.totalTasks, completed: j.progress?.completed, progress: j.progress?.progress
 				}
 			}
 		}

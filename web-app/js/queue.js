@@ -28,7 +28,11 @@
 				if (job.status == 'RUNNING') {
 					// job running, update the progress bar
 					$('.title', td).html(job.title);
-					$('.bar', td).css('width', (job.progress * 100) + '%');
+					var percent = job.progress * 100;
+					$('.bar', td).css('width', percent + '%');
+					$('.bar', td).attr('title', job.title).data('content', job.log).popover({
+						placement: 'bottom'
+					});
 					
 				} else if (job.status == 'ERROR') {
 					// job error, update the error popover
