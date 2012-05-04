@@ -8,7 +8,7 @@ class QueueService {
 	
 	def list(params) {
 		// list completed/cancelled/discarded/error jobs from this date on
-		def date = new Date(System.currentTimeMillis() - (1000 * 60))
+		def date = new Date(System.currentTimeMillis() - (1000 * (params.timeout ?: 60)))
 
 		// TODO: use params to filter items
 		HookJob.withCriteria {
