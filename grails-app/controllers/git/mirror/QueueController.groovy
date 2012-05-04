@@ -5,9 +5,7 @@ import grails.converters.JSON
 
 class QueueController {
 
-	def hookJobService
-	
-	def hookJobExecutor
+	def queueService
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def index() {
@@ -30,12 +28,12 @@ class QueueController {
 		// TODO: keep service name? use service name as remote name?
         log.debug("remote " + cmd.remote)
         log.debug("path " + cmd.path)
-		hookJobService.enqueue(cmd.remote, cmd.path, 'undefined')
+		queueService.enqueue(cmd.remote, cmd.path, 'undefined')
 		redirect action: 'index'
 	}
 	
 	def dequeue() {
-		hookJobService.dequeueAndRun()
+		queueService.dequeueAndRun()
 		redirect action: 'index'
 	}
 	

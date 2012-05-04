@@ -1,6 +1,6 @@
 package git.mirror
 
-class HookJobService {
+class QueueService {
 
 	static transactional = false
 	

@@ -8,7 +8,7 @@ class HookController {
 	
 	def gitService
 	
-	def hookJobService
+	def queueService
 	
 	/**
 	 * http://help.github.com/post-receive-hooks/
@@ -22,7 +22,7 @@ class HookController {
 		def path = pathService.resolvePath(url)
 		
 		// enqueue job for async processing
-		hookJobService.enqueue(url, path, 'github')
+		queueService.enqueue(url, path, 'github')
 		
 		render "ok"
 	}
@@ -37,7 +37,7 @@ class HookController {
 		def path = pathService.resolvePath(url)
 		
 		// enqueue job for async processing
-		hookJobService.enqueue(url, path, 'bitbucket')
+		queueService.enqueue(url, path, 'bitbucket')
 		
 		render "ok"
 	}
@@ -54,7 +54,7 @@ class HookController {
 		def path = pathService.resolvePath(url)
 		
 		// enqueue job for async processing
-		hookJobService.enqueue(url, path, 'beanstalk')
+		queueService.enqueue(url, path, 'beanstalk')
 		
 		render "ok"
 	}
