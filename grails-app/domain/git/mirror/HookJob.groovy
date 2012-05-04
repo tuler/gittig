@@ -14,7 +14,7 @@ class HookJob {
 	
 	String error
 	
-	String log
+	String result
 	
 	Date dateCreated
 	
@@ -27,13 +27,13 @@ class HookJob {
 		path blank: false
 		hook blank: false
 		error nullable: true
-		log nullable: true
+		result nullable: true
 		progress nullable: true
 	}
 
 	static mapping = {
 		error type: "text"
-		log type: "text"
+		result type: "text"
 	}
 	
 	enum HookJobStatus {

@@ -66,9 +66,7 @@ class QueueService {
 				def j = HookJob.get(job.id)
 				j.status = status
 				j.error = error
-				if (result) {
-					j.log = j.log + result
-				}
+				j.result = result
 				j.save(failOnError: true, flush: true)
 			}
 		} else {
