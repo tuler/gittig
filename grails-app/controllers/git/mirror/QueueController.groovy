@@ -9,11 +9,11 @@ class QueueController {
 	
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def index() {
-		[jobs: HookJob.list(params)]
+		[jobs: queueService.list(params)]
 	}
 
 	def status() {
-		def results = HookJob.list()
+		def results = queueService.list(params)
 		render(contentType: "text/json") {
 			jobs = array {
 				for (j in results) {

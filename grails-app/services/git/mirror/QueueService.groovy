@@ -6,6 +6,20 @@ class QueueService {
 	
 	def gitService
 	
+	def list(params) {
+		// list completed/cancelled/discarded/error jobs from this date on
+		def date = new Date(System.currentTimeMillis() - (1000 * 60))
+
+		// TODO: use params to filter items
+		HookJob.withCriteria {
+			or {
+				eq('status', HookJob.HookJobStatus.WAITING)
+				eq('status', HookJob.HookJobStatus.RUNNING)
+				ge('dateCreated', date)
+			}
+		}
+	}
+	
 	def enqueue(url, path, hook) {
 		new HookJob(url: url, path: path, hook: hook).save(failOnError: true)
 	}
