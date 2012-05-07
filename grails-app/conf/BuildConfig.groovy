@@ -21,20 +21,9 @@ grails.project.dependency.resolution = {
         grailsHome()
         grailsCentral()
         mavenCentral()
-
-        // uncomment these to enable remote dependency resolution from public Maven repositories
-        //mavenCentral()
-        //mavenLocal()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
 		mavenRepo "http://download.eclipse.org/jgit/maven"
     }
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
-        // runtime 'mysql:mysql-connector-java:5.1.16'
 		compile 'org.eclipse.jgit:org.eclipse.jgit:1.3.0.201202151440-r'
     }
 
@@ -42,22 +31,18 @@ grails.project.dependency.resolution = {
 		runtime ":hibernate:$grailsVersion"
 		runtime ":jquery:1.7.1"
 		runtime ":resources:1.1.6"
-
-        // Uncomment these (or add new ones) to enable additional resources capabilities
 		runtime ":cache-headers:1.1.5"
 		runtime ":zipped-resources:1.0"
 		runtime ":cached-resources:1.0"
-		// runtime ":yui-minify-resources:0.1.4"
+		runtime ":yui-minify-resources:0.1.4"
 		runtime ":twitter-bootstrap:2.0.1.19"
 
 		build ":tomcat:$grailsVersion"
 		
 		runtime ":console:1.1"
-		runtime ":executor:0.3"
 		runtime ":fields:1.0.4"
 		runtime ":git:1.0-SNAPSHOT"
 		runtime ":spring-security-core:1.2.7.2"
 		runtime ":spring-security-ldap:1.0.5"
-		compile ":quartz2:0.2.2"
 	}
 }

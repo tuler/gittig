@@ -47,8 +47,6 @@ class QueueService {
 					it.save(failOnError: true)
 				}
 				return job
-			} else {
-				log.debug "No job to dequeue"
 			}
 		}
 	}
@@ -79,15 +77,7 @@ class QueueService {
 				j.result = result
 				j.save(failOnError: true, flush: true)
 			}
-		} else {
-			log.debug "No job to run"
 		}
 	}
 	
-	/**
-	 * Among the WAITING jobs, keep just one per url/path, mark the duplicates as DISCARDED
-	 */
-	def prune() {
-		// TODO
-	}
 }

@@ -26,13 +26,13 @@ class QueueController {
 	@Secured(['ROLE_USER','ROLE_ADMIN'])
 	def enqueue(RepoCommand cmd) {
 		// TODO: keep service name? use service name as remote name?
-        log.debug("remote " + cmd.remote)
-        log.debug("path " + cmd.path)
+        log.debug("Enqueuing path ${cmd.path} remote ${cmd.remote}")
 		queueService.enqueue(cmd.remote, cmd.path, 'undefined')
 		redirect action: 'index'
 	}
 	
 	def dequeue() {
+		log.debug "Manually dequeuing job"
 		queueService.dequeueAndRun()
 		redirect action: 'index'
 	}
