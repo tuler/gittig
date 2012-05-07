@@ -26,17 +26,23 @@
 				$('div.' + job.status, td).show();
 				
 				if (job.status == 'RUNNING') {
-					// job running, update the title, result and progress bar 
-					var percent = Math.floor(job.progress * 100) + '%';
-					var title = job.title + ' (' + percent + ')';
+					// job running...
 					
+					// update progress bar
+					var percent = Math.floor(job.progress * 100) + '%';
 					$('.bar', td).css('width', percent);
-					$('.title', td).html(title);
+
+					// update the title
+					if (job.title) {
+						var title = job.title + ' (' + percent + ')';
+						$('.title', td).html(title);
+						$('.bar', td).attr('title', title);
+					}
 					
 					if (job.result) {
 						// replace carriage return with html line break
 						var result = job.result.replace(/\r?\n|\r/g, '<br>');
-						$('.bar', td).attr('title', title).data('content', result).popover({
+						$('.bar', td).data('content', result).popover({
 							placement: 'bottom'
 						});
 					}
