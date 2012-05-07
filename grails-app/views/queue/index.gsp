@@ -29,7 +29,7 @@
 									<span class="label label-important" data-content="" title="${message(code: 'hookJob.status.ERROR')}"><g:message code="hookJob.status.ERROR" /></span>
 								</div>
 								<div class="RUNNING status" style="display: none;">
-									<a href="#" data-content="" title="" class="title"></a>
+									<p class="title"></p>
 									<div class="progress progress-striped active"><div class="bar" style="width: 0%;"></div></div>
 								</div>
 								<div class="DISCARDED status" style="display: none;">
