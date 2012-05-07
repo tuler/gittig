@@ -36,6 +36,16 @@ class QueueService {
 				job.progress = new HookJobProgress(job: job)
 				job.status = HookJob.HookJobStatus.RUNNING
 				job.save(failOnError: true, flush: true)
+				
+				// discard other waiting jobs of the same path
+				def discard = HookJob.withCriteria {
+					eq('status', HookJob.HookJobStatus.WAITING)
+					eq('path', job.path)
+				}.each {
+					it.status = HookJob.HookJobStatus.DISCARDED
+					it.result = "${job.id}"
+					it.save(failOnError: true)
+				}
 				return job
 			} else {
 				log.debug "No job to dequeue"
