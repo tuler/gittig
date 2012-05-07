@@ -7,7 +7,7 @@ class QueueController {
 
 	def queueService
 	
-	@Secured(['ROLE_USER','ROLE_ADMIN'])
+	@Secured(['ROLE_USER','ROLE_ADMIN', 'ROLE_ADMINISTRATORS'])
 	def index() {
 		[jobs: queueService.list(params)]
 	}
@@ -23,7 +23,7 @@ class QueueController {
 		}
 	}
 	
-	@Secured(['ROLE_USER','ROLE_ADMIN'])
+	@Secured(['ROLE_USER','ROLE_ADMIN', 'ROLE_ADMINISTRATORS'])
 	def enqueue(RepoCommand cmd) {
 		// TODO: keep service name? use service name as remote name?
         log.debug("Enqueuing path ${cmd.path} remote ${cmd.remote}")
