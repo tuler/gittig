@@ -6,8 +6,6 @@ class HookController {
 
 	def pathService
 	
-	def gitService
-	
 	def queueService
 	
 	/**
