@@ -34,15 +34,15 @@ grails.project.dependency.resolution = {
 		runtime ":cache-headers:1.1.5"
 		runtime ":zipped-resources:1.0"
 		runtime ":cached-resources:1.0"
-		runtime ":yui-minify-resources:0.1.4"
-		runtime ":twitter-bootstrap:2.0.1.19"
+		runtime ":yui-minify-resources:0.1.5"
+		runtime ":twitter-bootstrap:2.0.2.25"
 
 		build ":tomcat:$grailsVersion"
 		
 		runtime ":console:1.1"
-		runtime ":fields:1.0.4"
+		runtime ":fields:1.2"
 		runtime ":git:1.0-SNAPSHOT"
-		runtime ":spring-security-core:1.2.7.2"
+		runtime ":spring-security-core:1.2.7.3"
 		runtime ":spring-security-ldap:1.0.5"
 	}
 }
