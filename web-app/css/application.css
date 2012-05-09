@@ -1,3 +1,11 @@
 .progress {
 	margin-bottom: 0px;
 }
+
+tr.job td.status {
+	min-width: 200px;
+}
+
+tr.job td.action a {
+	display: none;
+}

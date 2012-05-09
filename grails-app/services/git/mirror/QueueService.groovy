@@ -80,4 +80,12 @@ class QueueService {
 		}
 	}
 	
+	def cancel(id) {
+		HookJob.withNewSession {
+			def job = HookJob.get(id)
+			job.status = HookJob.HookJobStatus.CANCELLED
+			job.save(failOnError: true, flush: true)
+		}
+	}
+	
 }

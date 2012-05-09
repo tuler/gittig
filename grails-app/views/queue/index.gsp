@@ -11,15 +11,16 @@
 					<th><g:message code="hookJob.dateCreated.label" /></th>
 					<th><g:message code="hookJob.url.label" /></th>
 					<th><g:message code="hookJob.status.label" /></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<g:if test="${jobs}">
 					<g:each in="${jobs}" var="job">
 						<tr class="job" id="${job.id}">
-							<td><g:formatDate date="${job.dateCreated}" type="datetime" /></td>
-							<td>${job.url}</td>
-							<td width="200px" class="status">
+							<td class="date" nowrap><g:formatDate date="${job.dateCreated}" type="datetime" /></td>
+							<td class="url" width="100%">${job.url}</td>
+							<td class="status">
 								<div class="WAITING status" style="display: none;">
 									<span class="label"><g:message code="hookJob.status.WAITING" /></span>
 								</div>
@@ -39,6 +40,9 @@
 								<div class="COMPLETED status" style="display: none;">
 									<span class="label label-success"><g:message code="hookJob.status.COMPLETED" /></span>
 								</div>
+							</td>
+							<td class="action">
+								<g:remoteLink controller="queue" action="cancel" id="${job.id}" class="btn btn-small btn-danger"><g:message code="hookJob.cancel.label" /></g:remoteLink>
 							</td>
 						</tr>
 					</g:each>

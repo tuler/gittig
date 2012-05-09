@@ -31,7 +31,7 @@ class HookJobProgressMonitor implements ProgressMonitor {
 	boolean isCancelled() {
 		HookJob.withNewSession {
 			def job = HookJob.get(jobId)
-			return job.cancelled
+			return job.status == HookJob.HookJobStatus.CANCELLED
 		}
 	}
 	
