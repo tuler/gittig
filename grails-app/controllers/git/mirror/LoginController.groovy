@@ -1,3 +1,5 @@
+package git.mirror
+
 import grails.converters.JSON
 
 import javax.servlet.http.HttpServletResponse
