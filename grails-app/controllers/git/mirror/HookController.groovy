@@ -27,12 +27,18 @@ class HookController {
 	 */
 	def bitbucket() {
 		def json = new JSONObject(params.payload)
-		def url = json['repository']['absolute_url']
-		log.debug "Bitbucket hook for ${url}"
+		def scm = json['repository']['scm']
+		if (scm == 'git') {
+			def owner = json['repository']['owner']
+			def name = json['repository']['name']
+			def url = "git@bitbucket.org:${owner}/${name}.git"
+			log.debug "Bitbucket hook for ${url}"
 
-		// enqueue job for async processing
-		queueService.enqueue(url)
-		
+			// enqueue job for async processing
+			queueService.enqueue(url)
+		} else {
+			log.warn "Bitbucket hook called for ${scm} repository, ignoring"
+		}
 		render "ok"
 	}
 
