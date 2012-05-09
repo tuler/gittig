@@ -6,8 +6,6 @@ class PathService implements ApplicationContextAware {
 
 	ApplicationContext applicationContext
 	
-	def gitService
-
 	/**
 	 * This methods analyzes a repo url and extract three parts: 
 	 * service: the service name, i.e. github or bitbucket or beanstalk
@@ -22,7 +20,7 @@ class PathService implements ApplicationContextAware {
 	 */
 	def extractUrlParts(url) {
 		def services = [
-			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
+			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
 			bitbucket: [~/git@bitbucket.org:([^\/]+)\/([^\.]+).git/], 
 			beanstalk: [~/git@([^\.]+).beanstalkapp.com:\/([^\.]+).git/]
 		]
@@ -72,10 +70,7 @@ class PathService implements ApplicationContextAware {
 			def maxdepth = depths[configuration.locationResolver]
 			def baseDir = configuration.baseDir
 			def cmd = "find ${baseDir} -type d -name *.git -maxdepth ${maxdepth}"
-			return cmd.execute().text.readLines().collect { path -> 
-				def remote = gitService.getRemoteUrl(path)
-				[path: path, remote: remote]
-			}
+			return cmd.execute().text.readLines()
 		} else {
 			return []
 		}

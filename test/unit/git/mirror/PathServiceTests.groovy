@@ -21,6 +21,20 @@ class PathServiceTests {
 		assert "git-mirror" == parts.name
 	}
 
+	void testExtractUrlPartsGithubHttps() {
+		def parts = service.extractUrlParts("https://github.com/tuler/git-mirror")
+		assert "github" == parts.service
+		assert "tuler" == parts.username
+		assert "git-mirror" == parts.name
+	}
+
+	void testExtractUrlPartsGithubHttpJGit() {
+		def parts = service.extractUrlParts("https://github.com/tuler/git-mirror.git")
+		assert "github" == parts.service
+		assert "tuler" == parts.username
+		assert "git-mirror" == parts.name
+	}
+
 	void testExtractUrlPartsBitbucket() {
 		def parts = service.extractUrlParts("git@bitbucket.org:tuler/git-mirror.git")
 		assert "bitbucket" == parts.service

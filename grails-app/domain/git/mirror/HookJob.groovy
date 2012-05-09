@@ -4,10 +4,6 @@ class HookJob {
 	
 	String url
 	
-	String path
-
-	String hook
-	
 	HookJobStatus status = HookJobStatus.WAITING
 	
 	boolean cancelled
@@ -24,8 +20,6 @@ class HookJob {
 	
 	static constraints = {
 		url blank: false
-		path blank: false
-		hook blank: false
 		error nullable: true
 		result nullable: true
 		progress nullable: true
@@ -45,7 +39,4 @@ class HookJob {
 		COMPLETED
 	}
 	
-	static waiting = where {
-		status == HookJobStatus.WAITING
-	}
 }

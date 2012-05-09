@@ -20,8 +20,8 @@ class QueueService {
 		}
 	}
 	
-	def enqueue(url, path, hook) {
-		new HookJob(url: url, path: path, hook: hook).save(failOnError: true)
+	def enqueue(url) {
+		new HookJob(url: url).save(failOnError: true)
 	}
 	
 	def dequeue() {
@@ -37,10 +37,10 @@ class QueueService {
 				job.status = HookJob.HookJobStatus.RUNNING
 				job.save(failOnError: true, flush: true)
 				
-				// discard other waiting jobs of the same path
+				// discard other waiting jobs of the same url
 				def discard = HookJob.withCriteria {
 					eq('status', HookJob.HookJobStatus.WAITING)
-					eq('path', job.path)
+					eq('url', job.url)
 				}.each {
 					it.status = HookJob.HookJobStatus.DISCARDED
 					it.result = "${job.id}"
@@ -62,7 +62,7 @@ class QueueService {
 			def result
 			try {
 				def hookJobProgressMonitor = new HookJobProgressMonitor(job.id)
-				result = gitService.cloneOrUpdate(job.url, job.path, hookJobProgressMonitor)
+				result = gitService.cloneOrUpdate(job.url, hookJobProgressMonitor)
 				status = HookJob.HookJobStatus.COMPLETED
 			} catch (HookJobException e) {
 				status = HookJob.HookJobStatus.ERROR

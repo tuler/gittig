@@ -4,8 +4,6 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 
 class HookController {
 
-	def pathService
-	
 	def queueService
 	
 	/**
@@ -16,11 +14,10 @@ class HookController {
 		def url = json['repository']['url']
 		log.debug "GitHub hook for ${url}"
 		
-		// resolve local git repo path
-		def path = pathService.resolvePath(url)
+		// TODO: check if json['repository']['private'] == 1 and switch to ssh, or it won't work
 		
 		// enqueue job for async processing
-		queueService.enqueue(url, path, 'github')
+		queueService.enqueue(url)
 		
 		render "ok"
 	}
@@ -30,12 +27,12 @@ class HookController {
 	 */
 	def bitbucket() {
 		def json = request.JSON
-
-		// resolve local git repo path
-		def path = pathService.resolvePath(url)
 		
+		// TODO
+		def url = ''
+
 		// enqueue job for async processing
-		queueService.enqueue(url, path, 'bitbucket')
+		queueService.enqueue(url)
 		
 		render "ok"
 	}
@@ -48,11 +45,8 @@ class HookController {
 		def url = json.get('uri')
 		log.debug "Beanstalk hook for ${url}"
 
-		// resolve local git repo path
-		def path = pathService.resolvePath(url)
-		
 		// enqueue job for async processing
-		queueService.enqueue(url, path, 'beanstalk')
+		queueService.enqueue(url)
 		
 		render "ok"
 	}

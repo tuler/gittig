@@ -18,9 +18,9 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th><g:message code="hookJob.repository.label" /></th>
+						<th><g:message code="repo.path.label" /></th>
 						<th></th>
-						<th><g:message code="hookJob.origin.label" /></th>
+						<th><g:message code="repo.url.label" /></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,7 +28,7 @@
 					<g:each in="${repos}" var="repo">
 						<tr>
 							<td>${repo.path}</td>
-							<td><g:link controller="queue" action="enqueue" class="btn btn-small" params="[path: repo.path, remote: repo.remote]"><i class="icon-chevron-left"></i>Update</g:link></td>
+							<td><g:link controller="queue" action="enqueue" class="btn btn-small" params="[remote: repo.remote]"><i class="icon-chevron-left"></i><g:message code="repo.update.label" /></g:link></td>
 							<td><code>${repo.remote}</code></td>
 						</tr>
 					</g:each>

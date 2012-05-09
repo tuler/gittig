@@ -52,19 +52,11 @@ class HookControllerTests {
 		  "ref": "refs/heads/master"
 		}"""
 
-		def path = "/tmp"
-		def pathControl = mockFor(PathService)
-		pathControl.demand.resolvePath(1..1) { u -> 
-			path
-		}
-		controller.pathService = pathControl.createMock()
-		
-		def gitControl = mockFor(GitService)
-		gitControl.demand.cloneOrUpdate(1..1) { u, p -> 
-			assert p == path
+		def queueControl = mockFor(QueueService)
+		queueControl.demand.enqueue(1..1) { u -> 
 			assert u == "http://github.com/defunkt/github"
 		}
-		controller.gitService = gitControl.createMock()
+		controller.queueService = queueControl.createMock()
 		controller.github()
 	}
 
@@ -126,19 +118,12 @@ class HookControllerTests {
 		    'canon_url': 'https://bitbucket.org',
 		    'user': 'brodie'
 		}"""
-		def path = "/tmp"
-		def pathControl = mockFor(PathService)
-		pathControl.demand.resolvePath(1..1) { u -> 
-			path
-		}
-		controller.pathService = pathControl.createMock()
-		
-		def gitControl = mockFor(GitService)
-		gitControl.demand.cloneOrUpdate(1..1) { u, p -> 
-			assert p == path
+
+		def queueControl = mockFor(QueueService)
+		queueControl.demand.enqueue(1..1) { u -> 
 			assert u == "https://bitbucket.org/brodie/cram/"
 		}
-		controller.gitService = gitControl.createMock()
+		controller.queueService = queueControl.createMock()
 		controller.bitbucket()
 	}
 
@@ -201,19 +186,12 @@ class HookControllerTests {
 		      }
 		    ]
 		}"""
-		def path = "/tmp"
-		def pathControl = mockFor(PathService)
-		pathControl.demand.resolvePath(1..1) { u -> 
-			path
-		}
-		controller.pathService = pathControl.createMock()
-		
-		def gitControl = mockFor(GitService)
-		gitControl.demand.cloneOrUpdate(1..1) { u, p -> 
-			assert p == path
+
+		def queueControl = mockFor(QueueService)
+		queueControl.demand.enqueue(1..1) { u -> 
 			assert u == "git@wildbit.beanstalkapp.com:/beanstalk.git"
 		}
-		controller.gitService = gitControl.createMock()
+		controller.queueService = queueControl.createMock()
 		controller.beanstalk()
 	}
 }

@@ -8,19 +8,27 @@ import org.eclipse.jgit.transport.FetchResult
 class GitService {
 
 	static transactional = false
+
+	def pathService
 	
 	/**
 	 * Check if repository exists and updates, clone otherwise.
 	 */
-	def cloneOrUpdate(url, path, progressMonitor) {
-		log.debug "Cloning or updating ${url} at ${path}"
-		if (new File(path).exists()) {
-			def result = update(path, progressMonitor)
-			// TODO: how do I get a nice text output from a FetchResult?
-			return result.messages
+	def cloneOrUpdate(url, progressMonitor) {
+		// resolve local git repo path
+		def path = pathService.resolvePath(url)
+		if (path) {
+			log.debug "Cloning or updating ${url} at ${path}"
+			if (new File(path).exists()) {
+				def result = update(path, progressMonitor)
+				// TODO: how do I get a nice text output from a FetchResult?
+				return result.messages
+			} else {
+				clone(url, path, progressMonitor)
+				return ""
+			}
 		} else {
-			clone(url, path, progressMonitor)
-			return ""
+			log.error "Could not resolve path for url ${url}"
 		}
 	}
 	
@@ -76,6 +84,9 @@ class GitService {
 		}
 	}
 	
+	/**
+	 * Get the url of the origin remote
+	 */
 	def getRemoteUrl(path) {
 		RepositoryBuilder builder = new RepositoryBuilder()
 		Repository repository = builder.setGitDir(new File(path)).readEnvironment().build()

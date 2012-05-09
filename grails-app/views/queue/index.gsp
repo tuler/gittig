@@ -9,8 +9,7 @@
 			<thead>
 				<tr>
 					<th><g:message code="hookJob.dateCreated.label" /></th>
-					<th><g:message code="hookJob.repository.label" /></th>
-					<th><g:message code="hookJob.origin.label" /></th>
+					<th><g:message code="hookJob.url.label" /></th>
 					<th><g:message code="hookJob.status.label" /></th>
 				</tr>
 			</thead>
@@ -19,8 +18,7 @@
 					<g:each in="${jobs}" var="job">
 						<tr class="job" id="${job.id}">
 							<td><g:formatDate date="${job.dateCreated}" type="datetime" /></td>
-							<td>${job.path}</td>
-							<td><code>${job.url}</code></td>
+							<td>${job.url}</td>
 							<td width="200px" class="status">
 								<div class="WAITING status" style="display: none;">
 									<span class="label"><g:message code="hookJob.status.WAITING" /></span>
