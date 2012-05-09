@@ -21,7 +21,6 @@
 						<th><g:message code="hookJob.repository.label" /></th>
 						<th></th>
 						<th><g:message code="hookJob.origin.label" /></th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,7 +35,7 @@
 					</g:if>
 					<g:else>
 						<tr>
-							<td colspan="4"><g:message code="hookJob.no_repositories.label" /></td>
+							<td colspan="3"><g:message code="hookJob.no_repositories.label" /></td>
 						</tr>
 					</g:else>
 				</tbody>
