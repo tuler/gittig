@@ -9,6 +9,8 @@ class BootStrap {
 
 	PersistenceContextInterceptor persistenceInterceptor
 	
+	def grailsApplication
+	
 	def queueService
 	
 	def queueExecutor
@@ -25,6 +27,25 @@ class BootStrap {
 			log.info "Creating 'admin' user"
 			def user = new User(username: 'admin', userRealName: 'admin', password: 'admin', enabled: true, email: 'admin@servername').save(failOnError: true)
 			UserRole.create(user, Role.findByAuthority('ROLE_ADMIN'), true)
+		}
+		
+		// configuration validation
+		def baseDir = grailsApplication.config.application.baseDir
+		if (!baseDir) {
+			log.error "No baseDir configuration!"
+		} else {
+			def f = new File(baseDir)
+			if (!f.exists()) {
+				log.error "Configured baseDir ${baseDir} is not readable"
+			}
+			if (!f.canWrite()) {
+				log.error "Configured baseDir ${baseDir} is not writable"
+			}			
+		}
+
+		def locationResolverName = grailsApplication.config.application.locationResolver
+		if (!(locationResolverName in ['nameLocationResolver', 'usernameLocationResolver', 'serviceLocationResolver'])) {
+			log.error "Configured locationResolver ${locationResolverName} is not valid"
 		}
 		
 		// dequeue scheduling

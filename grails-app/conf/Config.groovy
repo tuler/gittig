@@ -108,3 +108,6 @@ log4j = {
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'git.mirror.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'git.mirror.UserRole'
 grails.plugins.springsecurity.authority.className = 'git.mirror.Role'
+
+// nameLocationResolver, usernameLocationResolver, serviceLocationResolver
+application.locationResolver = 'nameLocationResolver'

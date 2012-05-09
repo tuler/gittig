@@ -6,6 +6,8 @@ class PathService implements ApplicationContextAware {
 
 	ApplicationContext applicationContext
 	
+	def grailsApplication
+	
 	/**
 	 * This methods analyzes a repo url and extract three parts: 
 	 * service: the service name, i.e. github or bitbucket or beanstalk
@@ -41,37 +43,45 @@ class PathService implements ApplicationContextAware {
 	 * the configured locationResolver is used to define the local path.
 	 */
 	def resolvePath(url) {
-		def configuration = Configuration.find {}
-		if (configuration) {
-			def locationResolverName = configuration.locationResolver
+		def baseDir = grailsApplication.config.application.baseDir
+		if (baseDir) {
+			def locationResolverName = grailsApplication.config.application.locationResolver
 			def locationResolver = applicationContext.getBean(locationResolverName)
-			def parts = extractUrlParts(url)
-			def path = configuration.baseDir + locationResolver.resolveLocation(parts.service, parts.username, parts.name)
-			log.debug "${url} resolved to path ${path}"
-			return path
+			if (locationResolver) {
+				def parts = extractUrlParts(url)
+				def path = baseDir + locationResolver.resolveLocation(parts.service, parts.username, parts.name)
+				log.debug "${url} resolved to path ${path}"
+				return path
+			}
 		}
     }
 
 	/**
 	 * This method scan the filesystem looking for git repositories.
-	 * The scan is started in a base directory and go as deeply as the locationResolver
-	 * configuration.
+	 * The scan is started in a base directory and go as deeply as the locationResolver option.
 	 *
 	 * Repository must be bare repos, and the directory name must end with ".git"
 	 */
 	def listRepos() {
-		def configuration = Configuration.find {}
-		if (configuration) {
+		def baseDir = grailsApplication.config.application.baseDir
+		if (baseDir) {
 			def depths = [
 				'nameLocationResolver': 1, 
 				'usernameLocationResolver': 2, 
 				'serviceLocationResolver': 3
 			]
-			def maxdepth = depths[configuration.locationResolver]
-			def baseDir = configuration.baseDir
-			def cmd = "find ${baseDir} -type d -name *.git -maxdepth ${maxdepth}"
-			return cmd.execute().text.readLines()
+			def locationResolverName = grailsApplication.config.application.locationResolver
+			def maxdepth = depths[locationResolverName]
+			if (maxdepth) {
+				def cmd = "find ${baseDir} -type d -name *.git -maxdepth ${maxdepth}"
+				return cmd.execute().text.readLines()
+			} else {
+				log.warn "Invalid locationResolver: ${locationResolverName}"
+				return []
+			}
+			
 		} else {
+			log.warn "No baseDir configuration"
 			return []
 		}
 	}

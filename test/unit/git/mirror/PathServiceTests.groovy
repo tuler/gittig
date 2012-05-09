@@ -4,7 +4,6 @@ import grails.test.mixin.*
 import org.junit.*
 
 @TestFor(PathService)
-@Mock([Configuration])
 class PathServiceTests {
 
 	void testExtractUrlPartsGithub() {

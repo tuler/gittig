@@ -5,12 +5,8 @@ class ConfigurationFilters {
 	def filters = {
 		all(controller:'*', action:'*') {
 			before = {
-				if (!(controllerName in ['setup', 'login'])) {
-					Configuration configuration = Configuration.find {}
-					if (!configuration) {
-						redirect controller: 'setup', action: 'index'
-					}
-				}
+				// TODO: check baseDir and locationResolver configuration
+				// and do something if configuration is not valid
 			}
 			after = { Map model ->
 
