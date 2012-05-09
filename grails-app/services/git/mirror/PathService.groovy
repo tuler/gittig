@@ -8,12 +8,19 @@ class PathService implements ApplicationContextAware {
 	
 	def gitService
 
+	/**
+	 * This methods analyzes a repo url and extract three parts: 
+	 * service: the service name, i.e. github or bitbucket or beanstalk
+	 * username: the username of the repository (or company name in case of beanstalk)
+	 * name: the repository (or project) name.
+	 * 
+	 * These are all examples of valid urls: 
+	 * http://github.com/tuler/git-mirror
+	 * git@github.com:tuler/git-mirror.git
+	 * git@bitbucket.org:tuler/git-mirror.git
+	 * git@tuler.beanstalkapp.com:/git-mirror.git
+	 */
 	def extractUrlParts(url) {
-		// http://github.com/tuler/git-mirror
-		// git@github.com:tuler/git-mirror.git
-		// git@bitbucket.org:tuler/git-mirror.git
-		// git@tuler.beanstalkapp.com:/git-mirror.git
-		
 		def services = [
 			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
 			bitbucket: [~/git@bitbucket.org:([^\/]+)\/([^\.]+).git/], 
@@ -30,6 +37,11 @@ class PathService implements ApplicationContextAware {
 		} ?: [:]
 	}
 	
+	/**
+	 * This method resolves a local path of a remote url.
+	 * The service name, user and repo name are extracted from the url, and then
+	 * the configured locationResolver is used to define the local path.
+	 */
 	def resolvePath(url) {
 		def configuration = Configuration.find {}
 		if (configuration) {
@@ -42,6 +54,13 @@ class PathService implements ApplicationContextAware {
 		}
     }
 
+	/**
+	 * This method scan the filesystem looking for git repositories.
+	 * The scan is started in a base directory and go as deeply as the locationResolver
+	 * configuration.
+	 *
+	 * Repository must be bare repos, and the directory name must end with ".git"
+	 */
 	def listRepos() {
 		def configuration = Configuration.find {}
 		if (configuration) {
