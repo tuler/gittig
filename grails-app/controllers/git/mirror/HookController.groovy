@@ -26,10 +26,9 @@ class HookController {
 	 * http://confluence.atlassian.com/display/BITBUCKET/Setting+Up+the+bitbucket+POST+Service
 	 */
 	def bitbucket() {
-		def json = request.JSON
-		
-		// TODO
-		def url = ''
+		def json = new JSONObject(params.payload)
+		def url = json['repository']['absolute_url']
+		log.debug "Bitbucket hook for ${url}"
 
 		// enqueue job for async processing
 		queueService.enqueue(url)
