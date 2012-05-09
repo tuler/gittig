@@ -9,7 +9,7 @@
 			<li class="span4">
 				<div class="thumbnail">
 					<img src="${resource(dir: 'images', file: hook + '.png')}" width="150" />
-					<h5><g:createLink controller="hook" action="${hook}" absolute="true" /></h5>
+					<center><h5><g:createLink controller="hook" action="${hook}" absolute="true" /></h5></center>
 				</div>
 			</li>
 			</g:each>
