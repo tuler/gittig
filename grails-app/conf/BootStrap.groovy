@@ -9,8 +9,6 @@ class BootStrap {
 
 	PersistenceContextInterceptor persistenceInterceptor
 	
-	def grailsApplication
-	
 	def queueService
 	
 	def pollingExecutor
@@ -31,34 +29,15 @@ class BootStrap {
 			UserRole.create(user, Role.findByAuthority('ROLE_ADMIN'), true)
 		}
 		
-		// configuration validation
-		def baseDir = grailsApplication.config.app.baseDir
-		if (!baseDir) {
-			log.error "No baseDir configuration!"
-		} else {
-			def f = new File(baseDir)
-			if (!f.exists()) {
-				log.error "Configured baseDir ${baseDir} is not readable"
-			}
-			if (!f.canWrite()) {
-				log.error "Configured baseDir ${baseDir} is not writable"
-			}			
-		}
-
-		def locationResolverName = grailsApplication.config.app.locationResolver
-		if (!(locationResolverName in ['nameLocationResolver', 'usernameLocationResolver', 'serviceLocationResolver'])) {
-			log.error "Configured locationResolver ${locationResolverName} is not valid"
-		}
-		
 		// polling scheduling
 		def pollingInterval = grailsApplication.config.app.pollingInterval
 		if (pollingInterval > 0) {
 			pollingExecutor = Executors.newSingleThreadScheduledExecutor()
 			pollingExecutor.scheduleWithFixedDelay({
-				
+		
 			}, 10, pollingInterval, TimeUnit.MINUTES)
 		}
-		
+
 		// dequeue scheduling
 		def dequeueInterval = grailsApplication.config.app.dequeueInterval
 		queueExecutor = Executors.newSingleThreadScheduledExecutor();

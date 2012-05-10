@@ -2,17 +2,19 @@ package git.mirror
 
 class ConfigurationFilters {
 
+	def configService
+	
 	def filters = {
 		all(controller:'*', action:'*') {
 			before = {
-				// TODO: check baseDir and locationResolver configuration
-				// and do something if configuration is not valid
+				// get configuration errors
+				request.configErrors = configService.validate()
 			}
+
 			after = { Map model ->
-
 			}
-			afterView = { Exception e ->
 
+			afterView = { Exception e ->
 			}
 		}
 	}
