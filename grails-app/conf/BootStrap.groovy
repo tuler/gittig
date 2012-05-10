@@ -15,6 +15,8 @@ class BootStrap {
 	
 	def queueExecutor
 	
+	def grailsApplication
+	
 	def init = { servletContext ->
 		if (Role.count() == 0) {
 			log.info "Creating standard roles"
