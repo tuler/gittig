@@ -36,4 +36,10 @@ class QueueController {
 		redirect action: 'index'
 	}
 	
+	def cancel() {
+		log.debug "Canceling job ${params.id}"
+		queueService.cancel(params.id)
+		render "OK"
+	}
+	
 }
