@@ -100,6 +100,7 @@ log4j = {
            'grails.app.resourceMappers'
 
 	debug	'gittig',
+			'org.eclipse.jgit', 
 			'grails.app'
 
 }
