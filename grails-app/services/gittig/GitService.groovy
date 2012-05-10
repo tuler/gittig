@@ -38,7 +38,7 @@ class GitService {
     def clone(url, path, progressMonitor) {
 		log.debug "Cloning ${url} at ${path}"
 		try {
-			if (url.startsWith('http')) {
+			if (url.startsWith('http') && !(url.endsWith('.git'))) {
 				// XXX: JGit requires a .git at the end when url is http. Check this.
 				url = url + '.git'
 			}
