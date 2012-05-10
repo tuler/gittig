@@ -53,6 +53,7 @@
 				<div class="alert alert-error"><g:message code="${error}" default="${error}" /></div>
 			</g:each>
 			<g:layoutBody />
+			<footer style="text-align: right;">Powered by <g:img file="gittig.png" width="60" /></footer>
 		</div>
 		<r:layoutResources />
 	</body>
