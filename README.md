@@ -29,8 +29,8 @@ Create a file called '~/.gittig/gittig-config.properties' and define one or more
 <table>
 	<tr>
 		<th>Name</th>
-		</th>Default Value</th>
-		</th>Description</th>
+		<th>Default Value</th>
+		<th>Description</th>
 	</tr>
 	<tr>
 		<td>app.baseDir</td>
