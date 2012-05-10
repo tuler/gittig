@@ -28,7 +28,7 @@
 					<g:each in="${repos}" var="repo">
 						<tr>
 							<td>${repo.path}</td>
-							<td><sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATORS"><g:link controller="queue" action="enqueue" class="btn btn-small" params="[remote: repo.remote]"><i class="icon-chevron-left"></i><g:message code="repo.update.label" /></g:link></sec:ifAnyGranted></td>
+							<td><sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATORS"><g:if test="${repo.remote?.length() > 0}"><g:link controller="queue" action="enqueue" class="btn btn-small" params="[remote: repo.remote]"><i class="icon-chevron-left"></i><g:message code="repo.update.label" /></g:link></g:if></sec:ifAnyGranted></td>
 							<td><code>${repo.remote}</code></td>
 						</tr>
 					</g:each>
