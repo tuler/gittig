@@ -7,7 +7,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title><g:layoutTitle default="git-mirror" /></title>
+		<title><g:layoutTitle default="git mirror" /></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
 		<r:require modules="application, bootstrap" />
@@ -23,7 +23,7 @@
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
-					<g:link class="brand" controller="home">git-mirror</g:link>
+					<g:link class="brand" controller="home">git mirror</g:link>
 					<div class="nav-collapse">
 						<ul class="nav">
 							<sec:ifAnyGranted roles="ROLE_USER,ROLE_ADMIN,ROLE_ADMINISTRATORS"><li><g:link controller="queue">Queue</g:link></li></sec:ifAnyGranted>

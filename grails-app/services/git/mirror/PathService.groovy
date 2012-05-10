@@ -15,10 +15,10 @@ class PathService implements ApplicationContextAware {
 	 * name: the repository (or project) name.
 	 * 
 	 * These are all examples of valid urls: 
-	 * http://github.com/tuler/git-mirror
-	 * git@github.com:tuler/git-mirror.git
-	 * git@bitbucket.org:tuler/git-mirror.git
-	 * git@tuler.beanstalkapp.com:/git-mirror.git
+	 * http://github.com/tuler/gittig
+	 * git@github.com:tuler/gittig.git
+	 * git@bitbucket.org:tuler/gittig.git
+	 * git@tuler.beanstalkapp.com:/gittig.git
 	 */
 	def extractUrlParts(url) {
 		def services = [

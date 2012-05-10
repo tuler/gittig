@@ -2,8 +2,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main" />
-   </head>
+	</head>
 	<body>
-		<h1>git-mirror</h1>
 	</body>
 </html>
