@@ -16,13 +16,17 @@ class PathService implements ApplicationContextAware {
 	 * 
 	 * These are all examples of valid urls: 
 	 * http://github.com/tuler/gittig
+	 * http://github.com/tuler/gittig.git
+	 * https://github.com/tuler/gittig
+	 * https://github.com/tuler/gittig.git
+	 * git://github.com/tuler/gittig.git
 	 * git@github.com:tuler/gittig.git
 	 * git@bitbucket.org:tuler/gittig.git
 	 * git@tuler.beanstalkapp.com:/gittig.git
 	 */
 	def extractUrlParts(url) {
 		def services = [
-			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
+			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/git:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
 			bitbucket: [~/git@bitbucket.org:([^\/]+)\/([^\.]+).git/], 
 			beanstalk: [~/git@([^\.]+).beanstalkapp.com:\/([^\.]+).git/]
 		]
