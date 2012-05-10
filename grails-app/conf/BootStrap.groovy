@@ -13,6 +13,8 @@ class BootStrap {
 	
 	def queueService
 	
+	def pollingExecutor
+	
 	def queueExecutor
 	
 	def init = { servletContext ->
@@ -30,7 +32,7 @@ class BootStrap {
 		}
 		
 		// configuration validation
-		def baseDir = grailsApplication.config.application.baseDir
+		def baseDir = grailsApplication.config.app.baseDir
 		if (!baseDir) {
 			log.error "No baseDir configuration!"
 		} else {
@@ -43,12 +45,22 @@ class BootStrap {
 			}			
 		}
 
-		def locationResolverName = grailsApplication.config.application.locationResolver
+		def locationResolverName = grailsApplication.config.app.locationResolver
 		if (!(locationResolverName in ['nameLocationResolver', 'usernameLocationResolver', 'serviceLocationResolver'])) {
 			log.error "Configured locationResolver ${locationResolverName} is not valid"
 		}
 		
+		// polling scheduling
+		def pollingInterval = grailsApplication.config.app.pollingInterval
+		if (pollingInterval > 0) {
+			pollingExecutor = Executors.newSingleThreadScheduledExecutor()
+			pollingExecutor.scheduleWithFixedDelay({
+				
+			}, 10, pollingInterval, TimeUnit.MINUTES)
+		}
+		
 		// dequeue scheduling
+		def dequeueInterval = grailsApplication.config.app.dequeueInterval
 		queueExecutor = Executors.newSingleThreadScheduledExecutor();
 		queueExecutor.scheduleWithFixedDelay({
 			persistenceInterceptor.init()
@@ -58,10 +70,13 @@ class BootStrap {
 				persistenceInterceptor.flush()
 				persistenceInterceptor.destroy()
 			}
-		}, 10, 5, TimeUnit.SECONDS)
+		}, 10, dequeueInterval, TimeUnit.SECONDS)
 		
 	}
 	def destroy = {
+		if (pollingExecutor) {
+			pollingExecutor.shutdown()
+		}
 		queueExecutor.shutdown()
 	}
 }

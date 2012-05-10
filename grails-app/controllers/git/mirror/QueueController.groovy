@@ -7,6 +7,10 @@ class QueueController {
 
 	def queueService
 	
+	def pathService
+	
+	def gitService
+	
 	@Secured(['ROLE_USER','ROLE_ADMIN', 'ROLE_ADMINISTRATORS'])
 	def index() {
 		[jobs: queueService.list(params)]
@@ -27,6 +31,19 @@ class QueueController {
 	def enqueue(RepoCommand cmd) {
         log.debug("Enqueuing remote ${cmd.remote}")
 		queueService.enqueue(cmd.remote)
+		redirect action: 'index'
+	}
+	
+	def enqueueAll() {
+		// list all repos and enqueue each one
+		pathService.listRepos().each { path -> 
+			def remote = gitService.getRemoteUrl(path)
+			if (remote) {
+				queueService.enqueue(remote)
+			} else {
+				log.warn "Repository ${path} does not contain a origin remote"
+			}
+		}
 		redirect action: 'index'
 	}
 	

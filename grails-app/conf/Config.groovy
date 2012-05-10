@@ -109,5 +109,16 @@ grails.plugins.springsecurity.userLookup.userDomainClassName = 'git.mirror.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'git.mirror.UserRole'
 grails.plugins.springsecurity.authority.className = 'git.mirror.Role'
 
-// nameLocationResolver, usernameLocationResolver, serviceLocationResolver
-application.locationResolver = 'nameLocationResolver'
+app {
+	// nameLocationResolver, usernameLocationResolver, serviceLocationResolver
+	locationResolver = 'nameLocationResolver'	
+
+	// completed jobs are removed from the queue after this number of seconds
+	queueTimeout = 60
+	
+	// update polling interval, in minutes. If zero, polling is disabled
+	pollingInterval = 0
+	
+	// dequeue interval, in seconds
+	dequeueInterval = 5
+}

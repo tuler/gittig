@@ -19,7 +19,7 @@
 				<thead>
 					<tr>
 						<th><g:message code="repo.path.label" /></th>
-						<th></th>
+						<th><sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATORS"><g:link controller="queue" action="enqueueAll" class="btn btn-small"><i class="icon-chevron-left"></i><g:message code="repo.updateAll.label" /></g:link></sec:ifAnyGranted></th>
 						<th><g:message code="repo.url.label" /></th>
 					</tr>
 				</thead>
@@ -28,7 +28,7 @@
 					<g:each in="${repos}" var="repo">
 						<tr>
 							<td>${repo.path}</td>
-							<td><g:link controller="queue" action="enqueue" class="btn btn-small" params="[remote: repo.remote]"><i class="icon-chevron-left"></i><g:message code="repo.update.label" /></g:link></td>
+							<td><sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATORS"><g:link controller="queue" action="enqueue" class="btn btn-small" params="[remote: repo.remote]"><i class="icon-chevron-left"></i><g:message code="repo.update.label" /></g:link></sec:ifAnyGranted></td>
 							<td><code>${repo.remote}</code></td>
 						</tr>
 					</g:each>

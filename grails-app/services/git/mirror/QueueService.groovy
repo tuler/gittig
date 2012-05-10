@@ -6,11 +6,13 @@ class QueueService {
 	
 	def gitService
 	
+	def grailsApplication
+	
 	def list(params) {
 		// list completed/cancelled/discarded/error jobs from this date on
-		def date = new Date(System.currentTimeMillis() - (1000 * (params.timeout ?: 60)))
+		def queueTimeout = grailsApplication.config.app.queueTimeout
+		def date = new Date(System.currentTimeMillis() - (1000 * queueTimeout))
 
-		// TODO: use params to filter items
 		HookJob.withCriteria {
 			or {
 				eq('status', HookJob.HookJobStatus.WAITING)

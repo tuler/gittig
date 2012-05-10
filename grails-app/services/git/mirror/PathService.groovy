@@ -43,9 +43,9 @@ class PathService implements ApplicationContextAware {
 	 * the configured locationResolver is used to define the local path.
 	 */
 	def resolvePath(url) {
-		def baseDir = grailsApplication.config.application.baseDir
+		def baseDir = grailsApplication.config.app.baseDir
 		if (baseDir) {
-			def locationResolverName = grailsApplication.config.application.locationResolver
+			def locationResolverName = grailsApplication.config.app.locationResolver
 			def locationResolver = applicationContext.getBean(locationResolverName)
 			if (locationResolver) {
 				def parts = extractUrlParts(url)
@@ -63,14 +63,14 @@ class PathService implements ApplicationContextAware {
 	 * Repository must be bare repos, and the directory name must end with ".git"
 	 */
 	def listRepos() {
-		def baseDir = grailsApplication.config.application.baseDir
+		def baseDir = grailsApplication.config.app.baseDir
 		if (baseDir) {
 			def depths = [
 				'nameLocationResolver': 1, 
 				'usernameLocationResolver': 2, 
 				'serviceLocationResolver': 3
 			]
-			def locationResolverName = grailsApplication.config.application.locationResolver
+			def locationResolverName = grailsApplication.config.app.locationResolver
 			def maxdepth = depths[locationResolverName]
 			if (maxdepth) {
 				def cmd = "find ${baseDir} -type d -name *.git -maxdepth ${maxdepth}"
