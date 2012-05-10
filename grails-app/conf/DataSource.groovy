@@ -25,8 +25,8 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "create-drop"
-            url = "jdbc:h2:mem:prodDb;MVCC=TRUE"
+            dbCreate = "update"
+            url = "jdbc:h2:gittig;MVCC=TRUE"
             pooled = true
             properties {
                maxActive = -1
