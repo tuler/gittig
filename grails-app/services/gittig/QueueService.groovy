@@ -23,7 +23,7 @@ class QueueService {
 	}
 	
 	def enqueue(url) {
-		new HookJob(url: url).save(failOnError: true)
+		new HookJob(url: url).save(failOnError: true, flush: true)
 	}
 	
 	def dequeue() {
@@ -46,7 +46,7 @@ class QueueService {
 				}.each {
 					it.status = HookJob.HookJobStatus.DISCARDED
 					it.result = "${job.id}"
-					it.save(failOnError: true)
+					it.save(failOnError: true, flush: true)
 				}
 				return job
 			}

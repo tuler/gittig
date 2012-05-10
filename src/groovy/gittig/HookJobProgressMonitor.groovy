@@ -17,14 +17,14 @@ class HookJobProgressMonitor implements ProgressMonitor {
 			job.progress.title = title
 			job.progress.completed = 0
 			job.progress.totalWork = totalWork
-			job.save(failOnError: true)
+			job.save(failOnError: true, flush: true)
 		}
 	}
 	
 	void endTask() {
 		HookJob.withNewSession {
 			def job = HookJob.get(jobId)
-			job.save(failOnError: true)
+			job.save(failOnError: true, flush: true)
 		}
 	}
 	
@@ -39,7 +39,7 @@ class HookJobProgressMonitor implements ProgressMonitor {
 		HookJob.withNewSession {
 			def job = HookJob.get(jobId)
 			job.progress.totalTasks = totalTasks
-			job.save(failOnError: true)
+			job.save(failOnError: true, flush: true)
 		}
 	}
 	
@@ -47,7 +47,7 @@ class HookJobProgressMonitor implements ProgressMonitor {
 		HookJob.withNewSession {
 			def job = HookJob.get(jobId)
 			job.progress.completed += completed
-			job.save(failOnError: true)
+			job.save(failOnError: true, flush: true)
 		}
 	}
 	
