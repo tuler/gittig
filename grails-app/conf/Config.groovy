@@ -3,8 +3,8 @@
 
 grails.config.locations = [ "classpath:${appName}-config.properties",
                             "classpath:${appName}-config.groovy",
-                            "file:${userHome}/.grails/${appName}-config.properties",
-                            "file:${userHome}/.grails/${appName}-config.groovy"]
+                            "file:${userHome}/.gittig/${appName}-config.properties",
+                            "file:${userHome}/.gittig/${appName}-config.groovy"]
 
 if (System.properties["${appName}.config.location"]) {
     grails.config.locations << "file:" + System.properties["${appName}.config.location"]
@@ -99,15 +99,15 @@ log4j = {
            'grails.app.taglib.org.grails.plugin.resource',
            'grails.app.resourceMappers'
 
-	debug	'git.mirror',
+	debug	'gittig',
 			'grails.app'
 
 }
 
 // Added by the Spring Security Core plugin:
-grails.plugins.springsecurity.userLookup.userDomainClassName = 'git.mirror.User'
-grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'git.mirror.UserRole'
-grails.plugins.springsecurity.authority.className = 'git.mirror.Role'
+grails.plugins.springsecurity.userLookup.userDomainClassName = 'gittig.User'
+grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'gittig.UserRole'
+grails.plugins.springsecurity.authority.className = 'gittig.Role'
 
 app {
 	// nameLocationResolver, usernameLocationResolver, serviceLocationResolver

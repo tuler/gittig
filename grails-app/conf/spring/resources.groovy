@@ -1,4 +1,4 @@
-import git.mirror.*
+import gittig.*
 
 beans = {
 	// Repository location resolvers

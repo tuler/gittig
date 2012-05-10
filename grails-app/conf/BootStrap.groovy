@@ -1,4 +1,4 @@
-import git.mirror.*
+import gittig.*
 
 import org.codehaus.groovy.grails.support.PersistenceContextInterceptor
 import java.util.concurrent.ScheduledExecutorService
