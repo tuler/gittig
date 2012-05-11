@@ -26,7 +26,7 @@
 					<g:link class="brand" controller="home">git mirror</g:link>
 					<div class="nav-collapse">
 						<ul class="nav">
-							<sec:ifAnyGranted roles="ROLE_USER,ROLE_ADMIN,ROLE_ADMINISTRATORS"><li><g:link controller="queue">Queue</g:link></li></sec:ifAnyGranted>
+							<sec:ifAnyGranted roles="ROLE_USER,ROLE_ADMIN,ROLE_ADMINISTRATORS"><li class="${controllerName == 'queue' ? 'active' : ''}"><g:link controller="queue">Queue</g:link></li></sec:ifAnyGranted>
 						</ul>
 						<ul class="nav pull-right">
 							<sec:ifLoggedIn>
@@ -53,7 +53,7 @@
 				<div class="alert alert-error"><g:message code="${error}" default="${error}" /></div>
 			</g:each>
 			<g:layoutBody />
-			<footer style="text-align: right;"><a href="http://tuler.github.com/gittig/"><g:img file="gittig.png" width="60" /></a></footer>
+			<footer><span><a href="http://tuler.github.com/gittig/"><g:img file="gittig.png" width="60" /></a></span></footer>
 		</div>
 		<r:layoutResources />
 	</body>

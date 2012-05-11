@@ -9,3 +9,9 @@ tr.job td.status {
 tr.job td.action a {
 	display: none;
 }
+
+footer {
+	position: absolute;
+	bottom: 0;
+	margin-bottom: 10px;
+}
