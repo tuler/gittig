@@ -40,6 +40,14 @@
 					</g:else>
 				</tbody>
 			</table>
+			<sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATORS">
+				<g:form controller="queue" action="enqueue">
+					<legend>Add Repository</legend>
+					<label>URL: </label>
+					<g:textField name="remote" />
+					<g:submitButton class="btn btn-small btn-primary" name="add" value="Add" />
+				</g:form>
+			</sec:ifAnyGranted>
 		</sec:ifLoggedIn>
 	</body>
 </html>
