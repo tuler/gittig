@@ -53,7 +53,7 @@
 				<div class="alert alert-error"><g:message code="${error}" default="${error}" /></div>
 			</g:each>
 			<g:layoutBody />
-			<footer><span><a href="http://tuler.github.com/gittig/"><g:img file="gittig.png" width="60" /></a></span></footer>
+			<footer><span><a href="http://documentup.com/tuler/gittig"><g:img file="gittig.png" width="60" /></a></span></footer>
 		</div>
 		<r:layoutResources />
 	</body>
