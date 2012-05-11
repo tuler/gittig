@@ -25,6 +25,7 @@ class PathService implements ApplicationContextAware {
 	 * git@tuler.beanstalkapp.com:/gittig.git
 	 */
 	def extractUrlParts(url) {
+		log.debug "Extracting parts for url ${url}"
 		def services = [
 			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/git:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
 			bitbucket: [~/git@bitbucket.org:([^\/]+)\/([^\.]+).git/], 
@@ -47,15 +48,23 @@ class PathService implements ApplicationContextAware {
 	 * the configured locationResolver is used to define the local path.
 	 */
 	def resolvePath(url) {
+		log.debug "Resolving path for url ${url}"
 		def baseDir = grailsApplication.config.app.baseDir
 		if (baseDir) {
 			def locationResolverName = grailsApplication.config.app.locationResolver
-			def locationResolver = applicationContext.getBean(locationResolverName)
-			if (locationResolver) {
-				def parts = extractUrlParts(url)
-				def path = baseDir + locationResolver.resolveLocation(parts.service, parts.username, parts.name)
-				log.debug "${url} resolved to path ${path}"
-				return path
+			if (locationResolverName) {
+				def locationResolver = applicationContext.getBean(locationResolverName)
+				if (locationResolver) {
+					def parts = extractUrlParts(url)
+					log.debug "URL ${url} mapped to ${parts}"
+					def path = baseDir + locationResolver.resolveLocation(parts.service, parts.username, parts.name)
+					log.debug "${url} resolved to path ${path}"
+					return path
+				} else {
+					log.error "Path for url ${url} not resolved, no bean for locationResolver ${locationResolverName}"
+				}
+			} else {
+				log.error "Path for url ${url} not resolved, locationResolver invalid: ${locationResolverName}"
 			}
 		}
     }
