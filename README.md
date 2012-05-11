@@ -1,4 +1,4 @@
-![gittig](https://github.com/tuler/gittig/raw/master/web-app/images/gittig_small_.png)
+![gittig](https://github.com/tuler/gittig/raw/master/web-app/images/gittig_small.png)
 
 ## About
 
