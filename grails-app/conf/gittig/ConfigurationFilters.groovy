@@ -5,7 +5,7 @@ class ConfigurationFilters {
 	def configService
 	
 	def filters = {
-		all(controller:'*', action:'*') {
+		all(controller: 'home', action: '*') {
 			before = {
 				// get configuration errors
 				request.configErrors = configService.validate()
