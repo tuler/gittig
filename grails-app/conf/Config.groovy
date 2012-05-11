@@ -122,4 +122,7 @@ app {
 	
 	// dequeue interval, in seconds
 	dequeueInterval = 5
+	
+	// number of simultaneous git operations
+	gitWorkers = 3
 }

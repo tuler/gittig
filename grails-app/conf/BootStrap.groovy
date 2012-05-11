@@ -43,7 +43,8 @@ class BootStrap {
 
 		// dequeue scheduling
 		def dequeueInterval = grailsApplication.config.app.dequeueInterval
-		queueExecutor = Executors.newSingleThreadScheduledExecutor();
+		def corePoolSize = grailsApplication.config.app.gitWorkers
+		queueExecutor = Executors.newScheduledThreadPool(corePoolSize);
 		queueExecutor.scheduleWithFixedDelay({
 			persistenceInterceptor.init()
 			try {
