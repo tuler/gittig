@@ -27,7 +27,8 @@ class BootStrap {
 		
 		if (User.count() == 0) {
 			log.info "Creating 'admin' user"
-			def user = new User(username: 'admin', userRealName: 'admin', password: 'admin', enabled: true, email: 'admin@servername').save(failOnError: true)
+			def password = grailsApplication.config.app.password ?: 'admin'
+			def user = new User(username: 'admin', userRealName: 'admin', password: password, enabled: true, email: 'admin@servername').save(failOnError: true)
 			UserRole.create(user, Role.findByAuthority('ROLE_ADMIN'), true)
 		}
 		
