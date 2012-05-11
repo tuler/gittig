@@ -1,7 +1,6 @@
-![gittig](https://github.com/tuler/gittig/raw/master/web-app/images/gittig.png)
+![gittig](https://github.com/tuler/gittig/raw/master/web-app/images/gittig_small_.png)
 
-About
-=====
+## About
 
 gittig is a web application that manages local mirrors of remote git repositories.
 gittig can be configured to do cron-like updates, but also provides out-of-the-box hook support for 3 popular git hosting providers: [GitHub](https://github.com), [BitBucket](https://bitbucket.org) and [Beanstalk](http://beanstalkapp.com).
@@ -12,8 +11,7 @@ Local mirrors of remote git repositories are useful for several reasons:
 * faster read-only remotes (network latency)
 * provide access to applications that require local git repositories (like Redmine)
 
-Installation
-============
+## Installation
 
 gittig is a Java application and can be deployed in any Java servlet container, and it was tested with [Tomcat](http://tomcat.apache.org).
 You can use the pre-compiled [war file](https://github.com/downloads/tuler/gittig/gittig-1.0.war).
@@ -22,8 +20,7 @@ If you want to build from source, the application is written in [Grails](http://
 Grails provides a complete web stack, built on top of proven Java technologies: Groovy, Spring and Hibernate.
 To generate the war file just issue a 'grails war' command.
 
-Configuration
-=============
+## Configuration
 
 The only required configuration is the base local directory that gittig will use to store the repositories.
 Create a file called '~/.gittig/gittig-config.properties' and define one or more than one of the configurations below:
@@ -58,29 +55,25 @@ Create a file called '~/.gittig/gittig-config.properties' and define one or more
 
 If you will use the hook support you will also need to configure the property 'grails.serverURL' with the absolute URL of your application, which must be reachable from the internet.
 
-Security
-========
+## Security
 
 gittig uses [spring security](http://grails-plugins.github.com/grails-spring-security-core/docs/manual/) for its authentication.
 As such it can be configured with a wide range of authentication methods, like LDAP.
 
 TODO
 
-SSH Keys
-========
+## SSH Keys
 
-gittig does not manage the authentication to the remote repositories, it uses plain git authentication process.
+gittig does not manage the authentication to the remote repositories, it follows the normal git authentication process.
 So you must have the ssh keys required to access the mirrored repositories.
 The keys must not use passphrases, because the update process must be headless.
 
-Hook Setup
-==========
+## Hook Setup
 
 Each git hosting provider provides an instruction page about how to configure a hook. Gittig provides a hook URL for each supported provider.
 Your deployment must be open to the Internet, so one of these providers can reach your server.
 
-GitHub
-------
+### GitHub
 
 How to your project admin page, click on 'Service Hooks', select 'Post-Receive URLs' and add the URL provided at the home page of your gittig application.
 
@@ -89,8 +82,7 @@ How to your project admin page, click on 'Service Hooks', select 'Post-Receive U
 
 For further instructions check [GitHub documentation](http://help.github.com/post-receive-hooks/)
 
-BitBucket
----------
+### BitBucket
 
 Go to the Bitbucket **Admin** tab.
 Click **Services** in the Additional options/settings section on the right-hand side of the screen.
@@ -100,8 +92,7 @@ Enter the URL provided at the home page of your gittig application.
 
 For further instructions check [Bitbucket documentation](http://confluence.atlassian.com/display/BITBUCKET/Setting+Up+the+bitbucket+POST+Service)
 
-Beanstalk
----------
+### Beanstalk
 
 In your repository, click **Setup** -> **Integration** -> **Web hooks**
 Enter the URL provided at the home page of your gittig application.
