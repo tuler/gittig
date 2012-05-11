@@ -9,7 +9,7 @@ class HomeController {
 	def springSecurityService
 	
 	def index() {
-		def hooks = ['github', 'bitbucket', 'beanstalk']
+		def hooks = ['github', 'bitbucket', 'beanstalk', 'codebase']
 		def repos = []
 		if (springSecurityService.isLoggedIn()) {
 			repos = pathService.listRepos().collect { path -> 

@@ -194,4 +194,54 @@ class HookControllerTests {
 		controller.queueService = queueControl.createMock()
 		controller.beanstalk()
 	}
+
+	/**
+	 * http://support.atechmedia.com/codebase/docs/howtos/repository-push-commit-notifications
+	 */
+	void testCodebase() {
+		params.payload = """{
+		   "before":"fc10b3aa5a9e39ac326489805bba5c577f04db85",                                   // Commit ref before the push
+		   "after":"840daf31f4f87cb5cafd295ef75de989095f415b",                                    // Commit ref after the push
+		   "ref":"refs/heads/master",                                                             // Branch of the push
+		   "repository":{
+		      "name":"Git Repo #1",                                                               // Friendly repository name
+		      "url":"http://test.codebasehq.com/projects/test-repositories/repositories/git1",    // URL to repository browser in Codebase
+		      "clone_url":"git@codebasehq.com:test/test-repositories/git1.git",                   // Default clone URL
+		      "clone_urls":{
+		         "ssh":"git@codebasehq.com:test/test-repositories/git1.git",                      // SSH clone URL
+		         "git":"git://codebasehq.com:test/test-repositories/git1.git",                    // git:// clone URL
+		         "http":"https://test.codebasehq.com/test-repositories/git1.git"                  // HTTP clone URL
+		      },
+		      "project":{
+		         "name":"Test Repositories",                                                      // Containing project friendly name
+		         "url":"http://test.codebasehq.com/projects/test-repositories",                   // Containing project URL
+		         "status":"active"                                                                // Containing project status
+		      }
+		   },
+		   "user":{
+		      "name":"Dan Wentworth",                                                             // Name of user who performed the push
+		      "username":"dan",                                                                   // Username of person who performed push
+		      "email":"dan@atechmedia.com"                                                        // Email address of person who performed push
+		   },
+		   "commits":[                                                                            // Array of commits in a push
+		      {
+		         "id":"840daf31f4f87cb5cafd295ef75de989095f415b",                                 // Ref of commit
+		         "message":"Extra output for the rrrraaaagh",                                     // Commit message
+		         "author":{
+		            "name":"Dan Wentworth",                                                       // Commit author
+		            "email":"dan@atechmedia.com"                                                  // Commit email address
+		         },
+		         "timestamp":"Mon, 18 Jul 2011 10:50:01 +0100",                                   // Date/Time of commit
+		         "url":"http://test.codebasehq.com/projects/test-repositories/repositories/git1/commit/840daf31f4f87cb5cafd295ef75de989095f415b"
+		      }
+		   ]
+		}"""
+
+		def queueControl = mockFor(QueueService)
+		queueControl.demand.enqueue(1..1) { u -> 
+			assert u == "git@codebasehq.com:test/test-repositories/git1.git"
+		}
+		controller.queueService = queueControl.createMock()
+		controller.codebase()
+	}
 }

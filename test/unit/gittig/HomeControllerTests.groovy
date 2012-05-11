@@ -29,7 +29,7 @@ class HomeControllerTests {
 		}
 		controller.gitService = gitServiceControl.createMock()
 		
-		assert ['github', 'bitbucket', 'beanstalk'] == controller.index().hooks
+		assert ['github', 'bitbucket', 'beanstalk', 'codebase'] == controller.index().hooks
 	}
 	
 }

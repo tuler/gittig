@@ -56,4 +56,18 @@ class HookController {
 		render "ok"
 	}
 	
+	/**
+	 * http://support.atechmedia.com/codebase/docs/howtos/repository-push-commit-notifications
+	 */
+	def codebase() {
+		def json = new JSONObject(params.payload)
+		def url = json['repository']['clone_url']
+		log.debug "Codebase hook for ${url}"
+		
+		// enqueue job for async processing
+		queueService.enqueue(url)
+		
+		render "ok"
+	}
+	
 }

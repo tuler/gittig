@@ -48,4 +48,10 @@ class PathServiceTests {
 		assert "gittig" == parts.name
 	}
 	
+	void testExtractUrlPartsCodebase() {
+		def parts = service.extractUrlParts("git@codebasehq.com:tuler/project/gittig.git")
+		assert "codebase" == parts.service
+		assert "tuler" == parts.username
+		assert "gittig" == parts.name
+	}
 }
