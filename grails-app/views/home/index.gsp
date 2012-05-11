@@ -38,16 +38,17 @@
 							<td colspan="3"><g:message code="hookJob.no_repositories.label" /></td>
 						</tr>
 					</g:else>
+					<sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATORS">
+					<g:form controller="queue" action="enqueue">
+						<tr>
+							<td></td>
+							<td></td>
+							<td><g:textField name="remote" /> <g:submitButton name="add" value="${message(code: 'repo.add.label')}" /></td>
+						</tr>
+					</g:form>
+					</sec:ifAnyGranted>
 				</tbody>
 			</table>
-			<sec:ifAnyGranted roles="ROLE_ADMIN,ROLE_ADMINISTRATORS">
-				<g:form controller="queue" action="enqueue">
-					<legend>Add Repository</legend>
-					<label>URL: </label>
-					<g:textField name="remote" />
-					<g:submitButton class="btn btn-small btn-primary" name="add" value="Add" />
-				</g:form>
-			</sec:ifAnyGranted>
 		</sec:ifLoggedIn>
 	</body>
 </html>
