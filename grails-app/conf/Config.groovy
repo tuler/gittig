@@ -121,7 +121,7 @@ app {
 	pollingInterval = 0
 	
 	// dequeue interval, in seconds
-	dequeueInterval = 5
+	dequeueInterval = 1
 	
 	// number of simultaneous git operations
 	gitWorkers = 3

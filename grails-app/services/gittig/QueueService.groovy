@@ -1,5 +1,7 @@
 package gittig
 
+import org.codehaus.groovy.grails.support.PersistenceContextInterceptor
+
 class QueueService {
 
 	static transactional = false
@@ -8,6 +10,10 @@ class QueueService {
 	
 	def grailsApplication
 	
+	PersistenceContextInterceptor persistenceInterceptor
+
+	def taskExecutor
+	
 	def list(params) {
 		// list completed/cancelled/discarded/error jobs from this date on
 		def queueTimeout = grailsApplication.config.app.queueTimeout
@@ -15,6 +21,7 @@ class QueueService {
 
 		HookJob.withCriteria {
 			or {
+				eq('status', HookJob.HookJobStatus.QUEUED)
 				eq('status', HookJob.HookJobStatus.WAITING)
 				eq('status', HookJob.HookJobStatus.RUNNING)
 				ge('dateCreated', date)
@@ -23,25 +30,25 @@ class QueueService {
 	}
 	
 	def enqueue(url) {
-		new HookJob(url: url).save(failOnError: true, flush: true)
+		new HookJob(url: url, status: HookJob.HookJobStatus.QUEUED).save(failOnError: true, flush: true)
 	}
 	
 	def dequeue() {
 		HookJob.withNewSession {
-			def waiting = HookJob.executeQuery "from HookJob j where j.status = ? and j.url not in (select jr.url from HookJob jr where jr.status = ?)", 
-				[HookJob.HookJobStatus.WAITING, HookJob.HookJobStatus.RUNNING]
-			if (waiting) {
-				def job = waiting.first()
+			def queued = HookJob.executeQuery "from HookJob j where j.status = ? and j.url not in (select jr.url from HookJob jr where jr.status = ? or jr.status = ?)", 
+				[HookJob.HookJobStatus.QUEUED, HookJob.HookJobStatus.WAITING, HookJob.HookJobStatus.RUNNING]
+			if (queued) {
+				def job = queued.first()
 				log.info "Dequeuing job for ${job.url}"
 
-				// initialize the progress and set to RUNNING status
+				// initialize the progress and set to WAITING status
 				job.progress = new HookJobProgress(job: job)
-				job.status = HookJob.HookJobStatus.RUNNING
+				job.status = HookJob.HookJobStatus.WAITING
 				job.save(failOnError: true, flush: true)
 				
-				// discard other waiting jobs of the same url
+				// discard other queue jobs of the same url
 				def discard = HookJob.withCriteria {
-					eq('status', HookJob.HookJobStatus.WAITING)
+					eq('status', HookJob.HookJobStatus.QUEUED)
 					eq('url', job.url)
 				}.each {
 					it.status = HookJob.HookJobStatus.DISCARDED
@@ -56,28 +63,45 @@ class QueueService {
 	def dequeueAndRun() {
 		def job = dequeue()
 		if (job) {
-			log.info "Running job for ${job.url}"
+			// submit the job for background execution
+			def jobId = job.id
+			def url = job.url
+			taskExecutor.submit {
+				persistenceInterceptor.init()
+				try {
+					// set job to RUNNING state
+					HookJob.withNewSession {
+						def j = HookJob.get(jobId)
+						j.status = HookJob.HookJobStatus.RUNNING
+						j.save(failOnError: true, flush: true)
+						log.info "Running job for ${j.url}"
+					}
+					
+					def status
+					def error
+					def result
+					try {
+						def hookJobProgressMonitor = new HookJobProgressMonitor(jobId)
+						result = gitService.cloneOrUpdate(url, hookJobProgressMonitor)
+						status = HookJob.HookJobStatus.COMPLETED
+					} catch (HookJobException e) {
+						status = HookJob.HookJobStatus.ERROR
+						error = e.message
+					}
 
-			// run the job
-			def status
-			def error
-			def result
-			try {
-				def hookJobProgressMonitor = new HookJobProgressMonitor(job.id)
-				result = gitService.cloneOrUpdate(job.url, hookJobProgressMonitor)
-				status = HookJob.HookJobStatus.COMPLETED
-			} catch (HookJobException e) {
-				status = HookJob.HookJobStatus.ERROR
-				error = e.message
-			}
-			
-			// save the job final state
-			HookJob.withNewSession {
-				def j = HookJob.get(job.id)
-				j.status = status
-				j.error = error
-				j.result = result
-				j.save(failOnError: true, flush: true)
+					// save the job final state
+					HookJob.withNewSession {
+						def j = HookJob.get(jobId)
+						j.status = status
+						j.error = error
+						j.result = result
+						j.save(failOnError: true, flush: true)
+					}
+
+				} finally {
+					persistenceInterceptor.flush()
+					persistenceInterceptor.destroy()
+				}
 			}
 		}
 	}

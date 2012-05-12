@@ -4,7 +4,7 @@ class HookJob {
 	
 	String url
 	
-	HookJobStatus status = HookJobStatus.WAITING
+	HookJobStatus status = HookJobStatus.QUEUED
 	
 	String error
 	
@@ -29,6 +29,7 @@ class HookJob {
 	}
 	
 	enum HookJobStatus {
+		QUEUED, 
 		WAITING, 
 		RUNNING, 
 		DISCARDED, 

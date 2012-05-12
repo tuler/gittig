@@ -21,7 +21,7 @@
 		$('div.' + job.status, td).show();
 		
 		// cancel button
-		if (job.status == 'RUNNING' || job.status == 'WAITING') {
+		if (job.status == 'RUNNING' || job.status == 'QUEUED') {
 			// show the cancel button
 			$('td.action a', tr).show();
 		} else {

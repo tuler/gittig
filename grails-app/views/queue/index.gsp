@@ -21,6 +21,9 @@
 							<td class="date" nowrap><g:formatDate date="${job.dateCreated}" type="datetime" /></td>
 							<td class="url" width="100%">${job.url}</td>
 							<td class="status">
+								<div class="QUEUED status" style="display: none;">
+									<span class="label"><g:message code="hookJob.status.QUEUED" /></span>
+								</div>
 								<div class="WAITING status" style="display: none;">
 									<span class="label"><g:message code="hookJob.status.WAITING" /></span>
 								</div>
