@@ -18,7 +18,7 @@ You can use the pre-compiled [war file](https://github.com/downloads/tuler/gitti
 
 If you want to build from source, the application is written in [Grails](http://grails.org).
 Grails provides a complete web stack, built on top of proven Java technologies: Groovy, Spring and Hibernate.
-To generate the war file just issue a 'grails war' command.
+To create the war file just issue a 'grails war' command.
 
 ## Configuration
 
@@ -47,9 +47,19 @@ Create a file called '~/.gittig/gittig-config.properties' and define one or more
 		<td>The number of seconds to keep completed jobs in the queue.</td>
 	</tr>
 	<tr>
+		<td>app.gitWorkers</td>
+		<td>3</td>
+		<td>The maximum number of simultaneous git (clone or update) operations.</td>
+	</tr>
+	<tr>
 		<td>app.pollingInterval</td>
 		<td>0 (disabled)</td>
 		<td>The polling interval for a cron-like update mode. Zero disables this mode.</td>
+	</tr>
+	<tr>
+		<td>app.password</td>
+		<td>'admin'</td>
+		<td>The password of the 'admin' user.</td>
 	</tr>
 </table>
 
@@ -57,10 +67,13 @@ If you will use the hook support you will also need to configure the property 'g
 
 ## Security
 
+If you are using the hook support the application must be open to the internet, so you should change the password of the admin user.
+You can do this by setting the 'app.password' property in your configuration, as described in the configuration section.
+
 gittig uses [spring security](http://grails-plugins.github.com/grails-spring-security-core/docs/manual/) for its authentication.
 As such it can be configured with a wide range of authentication methods, like LDAP.
 
-TODO
+The hook URLs cannot be password protected yet.
 
 ## SSH Keys
 
@@ -71,11 +84,11 @@ The keys must not use passphrases, because the update process must be headless.
 ## Hook Setup
 
 Each git hosting provider provides an instruction page about how to configure a hook. Gittig provides a hook URL for each supported provider.
-Your deployment must be open to the Internet, so one of these providers can reach your server.
+Your deployment must be open to the Internet, so the providers can reach your server.
 
 ### GitHub
 
-How to your project admin page, click on 'Service Hooks', select 'Post-Receive URLs' and add the URL provided at the home page of your gittig application.
+Go to your project admin page, click on 'Service Hooks', select 'Post-Receive URLs' and add the URL provided at the home page of your gittig application.
 
 ![admin page](http://img.skitch.com/20100620-r8st7468q7q5waf3y85hmpwtqs.png "Admin Page")
 ![hook page](http://img.skitch.com/20100620-br6dw5iiyk2643fahkqbi54h36.png "Hook Page")
@@ -101,9 +114,8 @@ For further instructions check [Beanstalk documentation](http://support.beanstal
 
 ## Roadmap
 
-* Support more git hosts
+* Support more git providers
 * Restrict hook access
-* No hook configuration (polling only)
 
 ## Changelog
 

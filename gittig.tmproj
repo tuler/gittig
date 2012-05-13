@@ -9,6 +9,8 @@
 			<string>grails-app</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
+			<key>selected</key>
+			<true/>
 			<key>sourceDirectory</key>
 			<string>grails-app</string>
 		</dict>
@@ -55,12 +57,20 @@
 		<dict>
 			<key>filename</key>
 			<string>application.properties</string>
+			<key>lastUsed</key>
+			<date>2012-05-13T14:17:06Z</date>
 		</dict>
 		<dict>
 			<key>filename</key>
 			<string>README.md</string>
 			<key>lastUsed</key>
-			<date>2012-05-10T13:05:03Z</date>
+			<date>2012-05-13T14:03:52Z</date>
+		</dict>
+		<dict>
+			<key>filename</key>
+			<string>.documentup.json</string>
+			<key>lastUsed</key>
+			<date>2012-05-13T14:14:52Z</date>
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
@@ -70,6 +80,6 @@
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{340, 4}, {1100, 874}}</string>
+	<string>{{340, 111}, {1100, 874}}</string>
 </dict>
 </plist>
