@@ -23,6 +23,11 @@
 		<div class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</a>
 					<g:link class="brand" controller="home">git mirror</g:link>
 					<div class="nav-collapse">
 						<ul class="nav">
