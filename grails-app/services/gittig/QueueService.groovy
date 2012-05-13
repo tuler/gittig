@@ -8,6 +8,8 @@ class QueueService {
 	
 	def gitService
 	
+	def pathService
+	
 	def grailsApplication
 	
 	PersistenceContextInterceptor persistenceInterceptor
@@ -31,6 +33,18 @@ class QueueService {
 	
 	def enqueue(url) {
 		new HookJob(url: url, status: HookJob.HookJobStatus.QUEUED).save(failOnError: true, flush: true)
+	}
+	
+	def enqueueAll() {
+		// list all repos and enqueue each one
+		pathService.listRepos().each { path -> 
+			def url = gitService.getRemoteUrl(path)
+			if (url) {
+				enqueue(url)
+			} else {
+				log.warn "Repository ${path} does not contain a origin remote"
+			}
+		}
 	}
 	
 	def dequeue() {

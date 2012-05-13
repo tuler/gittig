@@ -35,10 +35,21 @@ class BootStrap {
 		// polling scheduling
 		def pollingInterval = grailsApplication.config.app.pollingInterval
 		if (pollingInterval > 0) {
+			log.info "Scheduling cron-like update for ${pollingInterval} minutes"
 			pollingExecutor = Executors.newSingleThreadScheduledExecutor()
-			pollingExecutor.scheduleWithFixedDelay({
-		
-			}, 10, pollingInterval, TimeUnit.MINUTES)
+			pollingExecutor.scheduleAtFixedRate({
+				try {
+					persistenceInterceptor.init()
+					try {
+						queueService.enqueueAll()
+					} finally {
+						persistenceInterceptor.flush()
+						persistenceInterceptor.destroy()
+					}
+				} catch (e) {
+					log.error e
+				}
+			}, 0, pollingInterval, TimeUnit.MINUTES)
 		}
 
 		// dequeue scheduling
