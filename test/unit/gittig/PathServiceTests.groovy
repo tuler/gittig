@@ -42,7 +42,7 @@ class PathServiceTests {
 	}
 
 	void testExtractUrlPartsBeanstalk() {
-		def parts = service.extractUrlParts("git@tuler.beanstalkapp.com:/gittig.git")
+		def parts = service.extractUrlParts("git@tuler.git.beanstalkapp.com:/gittig.git")
 		assert "beanstalk" == parts.service
 		assert "tuler" == parts.username
 		assert "gittig" == parts.name

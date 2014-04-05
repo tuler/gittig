@@ -22,14 +22,14 @@ class PathService implements ApplicationContextAware {
 	 * git://github.com/tuler/gittig.git
 	 * git@github.com:tuler/gittig.git
 	 * git@bitbucket.org:tuler/gittig.git
-	 * git@tuler.beanstalkapp.com:/gittig.git
+	 * git@tuler.git.beanstalkapp.com:/gittig.git
 	 */
 	def extractUrlParts(url) {
 		log.debug "Extracting parts for url ${url}"
 		def services = [
 			github: [~/git@github.com:([^\/]+)\/([^\.]+).git/, ~/git:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)\.git/, ~/https?:\/\/github.com\/([^\/]+)\/(.+)/], 
 			bitbucket: [~/git@bitbucket.org:([^\/]+)\/([^\.]+).git/], 
-			beanstalk: [~/git@([^\.]+).beanstalkapp.com:\/([^\.]+).git/]
+			beanstalk: [~/git@([^\.]+).git.beanstalkapp.com:\/([^\.]+).git/]
 		]
 		
 		services.findResult { service, patterns -> 
