@@ -24,12 +24,12 @@ grails.project.dependency.resolution = {
 		mavenRepo "http://download.eclipse.org/jgit/maven"
     }
     dependencies {
-		compile 'org.eclipse.jgit:org.eclipse.jgit:1.3.0.201202151440-r'
+		compile 'org.eclipse.jgit:org.eclipse.jgit:2.2.0.201212191850-r'
     }
 
 	plugins {
 		runtime ":hibernate:$grailsVersion"
-		runtime ":jquery:1.7.1"
+		runtime ":jquery:1.8.3"
 		runtime ":resources:1.1.6"
 		runtime ":cache-headers:1.1.5"
 		runtime ":zipped-resources:1.0"
@@ -39,7 +39,7 @@ grails.project.dependency.resolution = {
 
 		build ":tomcat:$grailsVersion"
 		
-		runtime ":console:1.1"
+		runtime ":console:1.2"
 		runtime ":fields:1.2"
 		runtime ":spring-security-core:1.2.7.3"
 		runtime ":spring-security-ldap:1.0.6"
