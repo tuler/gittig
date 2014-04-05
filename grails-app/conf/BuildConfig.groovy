@@ -42,6 +42,6 @@ grails.project.dependency.resolution = {
 		runtime ":console:1.1"
 		runtime ":fields:1.2"
 		runtime ":spring-security-core:1.2.7.3"
-		runtime ":spring-security-ldap:1.0.5"
+		runtime ":spring-security-ldap:1.0.6"
 	}
 }
