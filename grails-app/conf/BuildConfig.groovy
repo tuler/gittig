@@ -24,7 +24,7 @@ grails.project.dependency.resolution = {
 		mavenRepo "http://download.eclipse.org/jgit/maven"
     }
     dependencies {
-		compile 'org.eclipse.jgit:org.eclipse.jgit:1.3.0.201202151440-r'
+		compile 'org.eclipse.jgit:org.eclipse.jgit:3.3.1.201403241930-r'
     }
 
 	plugins {

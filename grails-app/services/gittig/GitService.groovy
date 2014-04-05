@@ -55,6 +55,9 @@ class GitService {
 		} catch (JGitInternalException e) {
 			log.error e.cause
 			throw new HookJobException(e.cause.message)
+		} catch (GitAPIException e) {
+			log.error e
+			throw new HookJobException(e.cause.message)
 		}
     }
 
@@ -76,7 +79,7 @@ class GitService {
 		} catch (JGitInternalException e) {
 			log.error e.cause
 			throw new HookJobException(e.cause.message)
-		} catch (InvalidRemoteException e) {
+		} catch (GitAPIException e) {
 			log.error e
 			throw new HookJobException(e.message)
 		} catch (IOException e) {
