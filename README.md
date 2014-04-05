@@ -119,6 +119,10 @@ For further instructions check [Beanstalk documentation](http://support.beanstal
 
 ## Changelog
 
+#### 1.0.2 (Apr 05, 2014)
+
+* Updating JGit library due to bug in clone operation
+
 #### 1.0.1 (Apr 05, 2014)
 
 * Fixing #15: Beanstalk url layout change
