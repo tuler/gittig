@@ -119,13 +119,17 @@ For further instructions check [Beanstalk documentation](http://support.beanstal
 
 ## Changelog
 
+#### 1.0.1 (Apr 05, 2014)
+
+* Fixing #15: Beanstalk url layout change
+
 #### 1.0 (May 14, 2012)
 
 * Initial public release
 
 ## License
 
-Copyright (c) 2012 Danilo Tuler
+Copyright (c) 2014 Danilo Tuler
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
